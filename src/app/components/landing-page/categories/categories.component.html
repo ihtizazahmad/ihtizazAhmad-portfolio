@@ -1,0 +1,14 @@
+<div>
+    <h1 class="my-4">Wraps Up Popular Categories🤩</h1>
+    <div class="row">
+        <div class="col-lg-3 col-md-6 mb-3" *ngFor="let category of categories">
+            <div class="card">
+                <img src="{{category.img}}" alt="">
+                <div class="p-3">
+                    <h2 class="mb-1">{{category.name}}</h2>
+                    <p class="mb-0">{{category.totalitems}} Total Items</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
