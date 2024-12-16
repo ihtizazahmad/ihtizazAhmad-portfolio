@@ -1,0 +1,77 @@
+.jumbotron-wrapper {
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 15px;
+    border: 1px solid #00000033;
+    background-color: #FBFBFB;
+}
+
+h1 {
+    font-size: 54px;
+    font-weight: 600;
+    line-height: 66px;
+}
+
+.lead {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 20px;
+    color: #03081F;
+}
+
+.postcode {
+    font-size: 13px;
+    font-weight: 400;
+    color: #03081F;
+}
+
+.text-orange {
+    color: #FC8A06;
+}
+
+input[type="text"] {
+    height: 45px;
+    width: 250px;
+    border-radius: 25px;
+    padding-left: 20px;
+}
+
+.btn-orange {
+    background-color: #FC8A06;
+    color: white;
+    border-radius: 25px;
+    height: 45px;
+    padding: 0 30px;
+}
+
+.hero-img {
+    max-width: 100%;
+    width: 100%;
+}
+.back-div{
+    border-radius: 200px 0px 0px 200px;
+    background-color: #FC8A06;
+}
+
+.input-div{
+    display: flex;
+}
+@media screen and (max-width:500px){
+    h1{
+        font-size: 30px;
+        line-height: 35px;
+        margin: 20px 0px;
+    }
+    .input-div{
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+    }
+    .back-div{
+        margin: 20px 0px 0px 0px;
+    }
+    .col-md-12{
+        padding: 0px;
+    }
+}
