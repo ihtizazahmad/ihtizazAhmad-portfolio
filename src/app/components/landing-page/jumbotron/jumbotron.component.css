@@ -77,6 +77,7 @@ input[type="text"] {
     .container-fluid{
     max-width: 100%;
     width: 98% !important;
+    padding:0px 25px;
 }
 }
 
