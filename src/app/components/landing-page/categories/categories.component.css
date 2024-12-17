@@ -16,10 +16,25 @@ color: #FC8A06;
 }
 .card{
     border-radius: 16px;
+    cursor: pointer;
 }
 img{
     object-fit: cover;
     width: 100%;
     height: 250px;
     border-radius: 16px 16px 0px 0px;
+}
+.container-fluid{
+    max-width: 100%;
+    width: 100% !important;
+}
+@media  screen and (max-width:500px) {
+    .container-fluid{
+        max-width: 100%;
+        width: 98% !important;
+    }
+}
+.container-fluid{
+    max-width: 100%;
+    width: 90% !important;
 }

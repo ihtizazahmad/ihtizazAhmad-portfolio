@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-categories',
@@ -6,6 +7,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./categories.component.css']
 })
 export class CategoriesComponent {
+
+  constructor(private router:Router){}
+  gotobrowsermenu(){
+    this.router.navigate(['/browse-menu'])
+  }
+  
   categories = [
     { img: '../../../../assets/burgers.png' ,
       name:'Burgers & Fast food',
@@ -40,4 +47,5 @@ export class CategoriesComponent {
       totalitems:'32'
     }
   ]
+
 }

@@ -2,16 +2,15 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { LandingPageRoutingModule } from './landing-page-routing.module';
-import { JumbotronComponent } from './jumbotron/jumbotron.component';
 import { HomeComponent } from './home/home.component';
 import { CategoriesComponent } from './categories/categories.component';
 import { AdvertisementComponent } from './advertisement/advertisement.component';
 import { StatsComponent } from './stats/stats.component';
+import { JumbotronComponent } from './jumbotron/jumbotron.component';
 
 
 @NgModule({
   declarations: [
-    JumbotronComponent,
     HomeComponent,
     CategoriesComponent,
     AdvertisementComponent,
@@ -19,7 +18,8 @@ import { StatsComponent } from './stats/stats.component';
   ],
   imports: [
     CommonModule,
-    LandingPageRoutingModule
+    LandingPageRoutingModule,
+    JumbotronComponent
   ]
 })
 export class LandingPageModule { }

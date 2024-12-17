@@ -44,4 +44,12 @@ h1 {
         font-size: 20px;
         line-height: 30px;
     }
+    .container-fluid{
+        max-width: 100%;
+        width: 98% !important;
+    }
+}
+.container-fluid{
+    max-width: 100%;
+    width: 90% !important;
 }
