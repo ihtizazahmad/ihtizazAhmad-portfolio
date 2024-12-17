@@ -1,0 +1,87 @@
+.icon-button,
+.icon-tooltip {
+    background-color: #FC8A06;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, .2)
+}
+
+.icon-button {
+    position: fixed;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    margin-bottom: 15px
+}
+
+.facebook-button {
+    right: 20px;
+    bottom: 0
+}
+
+.call-button {
+    right: 20px;
+    bottom: 70px
+}
+
+.whatsapp-button {
+    right: 20px;
+    bottom: 145px
+}
+
+.gmail-button {
+    right: 20px;
+    bottom: 230px
+}
+
+.icon-button i {
+    font-size: 28px;
+    color: #fff
+}
+
+.icon-tooltip {
+    position: absolute;
+    right: 62px;
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+    display: block
+}
+
+.gmail {
+    left: 62px;
+    right: 25px;
+    padding: 8px 121px 3px 8px
+}
+
+.whatsapp-button:hover {
+    background-color: #25d366
+}
+
+.call-button:hover {
+    background-color: #007bff
+}
+
+.facebook-button:hover {
+    background-color: #4267b2
+}
+
+@media (max-width:768px) {
+    .icon-tooltip {
+        display:none !important;
+}
+/* .container-fluid{
+    max-width: 100%;
+    width: 100% !important;
+} */
+}
+/* .container-fluid{
+    max-width: 100%;
+    width: 90%;
+} */

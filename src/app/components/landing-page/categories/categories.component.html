@@ -1,7 +1,7 @@
-<div>
+<div class="container-fluid p-0">
     <h1 class="my-4">Wraps Up Popular Categories🤩</h1>
     <div class="row">
-        <div class="col-lg-3 col-md-6 mb-3" *ngFor="let category of categories">
+        <div class="col-lg-3 col-md-6 mb-3" *ngFor="let category of categories" (click)="gotobrowsermenu()">
             <div class="card">
                 <img src="{{category.img}}" alt="">
                 <div class="p-3">

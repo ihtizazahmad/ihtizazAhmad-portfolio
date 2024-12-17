@@ -1,28 +1,26 @@
 .jumbotron-wrapper {
-    background-color: #fff;
+    background-color: #03081F;
     padding: 1rem;
     border-radius: 15px;
     border: 1px solid #00000033;
-    background-color: #FBFBFB;
 }
-
 h1 {
     font-size: 54px;
     font-weight: 600;
     line-height: 66px;
-}
+    color: #ffffff;}
 
 .lead {
     font-size: 16px;
     font-weight: 400;
     line-height: 20px;
-    color: #03081F;
+    color: #ffffff;
 }
 
 .postcode {
     font-size: 13px;
     font-weight: 400;
-    color: #03081F;
+    color: #ffffff;
 }
 
 .text-orange {
@@ -45,7 +43,9 @@ input[type="text"] {
 }
 
 .hero-img {
-    max-width: 100%;
+    max-width: 465px;
+    height: 541px;
+    height: 100%;
     width: 100%;
 }
 .back-div{
@@ -75,12 +75,11 @@ input[type="text"] {
         padding: 0px;
     }
     .container-fluid{
-    max-width: 100%;
-    width: 98% !important;
+        max-width: 100%;
+        width: 98% !important;
+    }
 }
-}
-
 .container-fluid{
     max-width: 100%;
-    width: 90%;
+    width: 90% !important;
 }

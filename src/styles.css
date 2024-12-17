@@ -3,4 +3,29 @@ body {
     margin: 0;
     font-family: 'poppins', sans-serif;
 }
-html, body { height: 100%; }
+html, body{ height: 100%; }
+.mdc-form-field{
+    font-family: 'poppins', sans-serif;
+}
+.mat-mdc-dialog-content {
+    max-height: 70vh !important;
+}
+.mat-mdc-dialog-container .mdc-dialog__surface{
+    border-radius: 14px !important;
+    font-family: 'poppins', sans-serif;
+
+}
+.mat-mdc-checkbox.mat-primary {
+    --mdc-checkbox-selected-checkmark-color: #fff;
+    --mdc-checkbox-selected-focus-icon-color: #028643 !important;
+    --mdc-checkbox-selected-hover-icon-color: #028643 !important;
+    --mdc-checkbox-selected-pressed-icon-color: #028643 !important;
+    --mdc-checkbox-selected-icon-color: #028643 !important;
+}
+.text-dark{
+    font-family: 'poppins', sans-serif !important;
+}
+.mat-mdc-dialog-container .mdc-dialog__content::-webkit-scrollbar{
+    width: 0px;
+    height: 0px;
+}

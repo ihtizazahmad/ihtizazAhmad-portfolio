@@ -27,3 +27,13 @@
         margin-bottom: 10px;
     }
   }
+  @media screen and (max-width:500px){
+    .container-fluid{
+      max-width: 100%;
+      width: 98% !important;
+  }
+  }
+  .container-fluid{
+    max-width: 100%;
+    width: 90% !important;
+}
