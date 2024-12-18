@@ -1,0 +1,45 @@
+.container-fluid {
+    max-width: 100%;
+    width: 90% !important;
+}
+@media screen and (max-width:500px) {
+    .container-fluid {
+        max-width: 100%;
+        width: 98% !important;
+    }
+}
+
+
+  
+  form {
+    background: #fff;
+  }
+  
+  h5 {
+    color: #333;
+  }
+  .btn-checkout {
+    width: auto;
+    height: 50px;
+    border-radius: 8px;
+    padding: 0px 30px;
+    color: white;
+    background: #FC8A06;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 36px;
+
+}
+  .bg-success{
+    background-color: #028643 !important;
+  }
+  input:focus,
+  textarea:focus {
+    border-color: #028643;
+    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+  }
+  
+  .form-control{
+    height: 50px;
+    border-radius: 24px;
+  }
