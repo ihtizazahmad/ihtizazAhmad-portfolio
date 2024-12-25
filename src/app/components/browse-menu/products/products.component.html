@@ -1,12 +1,7 @@
 <app-products-jumbotron></app-products-jumbotron>
-<div class="categories my-4">
-    <div class="d-flex justify-content-center my-category gap-3">
-        <button class="btn category-btn active">Burgers & Fast Food</button>
-        <button class="btn category-btn">Salads</button>
-        <button class="btn category-btn">Pasta & Casuals</button>
-        <button class="btn category-btn">Pizza</button>
-        <button class="btn category-btn">Breakfast</button>
-        <button class="btn category-btn">Soups</button>
+<!-- <div class="categories my-4">
+    <div class="d-flex justify-content-center my-category gap-3" *ngFor="let category of categories">
+        <button class="btn category-btn">{{category.name}}</button>
     </div>
 </div>
 <div class="container-fluid">
@@ -14,9 +9,9 @@
     <div class="row">
         <div class="col-lg-6 col-xl-4 col-md-6 mb-4" *ngFor="let product of products">
             <div class="card">
-                <div class="d-flex flex-column justify-content-center">
+                <div class="d-flex flex-column justify-content-around">
                     <h2>{{product.name}}</h2>
-                    <h3>{{product.description}}</h3>
+                    <h3>{{product.shortDescription}}</h3>
                     <p>USD {{product.price}} </p>
                 </div>
                 <div class="product-img">
@@ -37,4 +32,59 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
+
+<div class="categories my-4">
+    <div class="d-flex justify-content-center my-category gap-3">
+      <!-- 'All' Category Button -->
+      <button class="btn category-btn" 
+        [ngClass]="{'active': activeCategory === 'All'}" 
+        (click)="showProducts('All')">
+        All
+      </button>
+      
+      <!-- Loop through categories and create category buttons -->
+      <button *ngFor="let category of categories" 
+        class="btn category-btn" 
+        [ngClass]="{'active': activeCategory === category._id}" 
+        (click)="showProducts(category._id)">
+        {{category.name}}
+      </button>
+    </div>
+  </div>
+  
+  <div class="container-fluid">
+    <h1>{{ activeCategory === 'All' ? 'All Products' : activeCategory }}</h1>
+    <div class="row">
+      <!-- Display 'No items available' if no products are found -->
+      <div *ngIf="products.length === 0" class="col-12 text-center">
+        <p>No items available</p>
+      </div>
+      
+      <!-- Display products if any are found -->
+      <div class="col-lg-6 col-xl-4 col-md-6 mb-4" *ngFor="let product of products">
+        <div class="card">
+          <div class="d-flex flex-column justify-content-around">
+            <h2>{{product.name}}</h2>
+            <h3>{{product.shortDescription}}</h3>
+            <p>USD {{product.price}} </p>
+          </div>
+          <div class="product-img">
+            <img src="../../../../assets/deal.png" alt="deal" class="image">
+            <button class="btn btn-plus" (click)="openDialog()">
+              <svg width="49" height="49" viewBox="0 0 49 49" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="49" height="49" fill="url(#pattern0_4_310)"/>
+                <defs>
+                  <pattern id="pattern0_4_310" patternContentUnits="objectBoundingBox" width="1" height="1">
+                    <use xlink:href="#image0_4_310" transform="scale(0.0111111)"/>
+                  </pattern>
+                  <image id="image0_4_310" width="90" height="90" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFoAAABaCAYAAAA4qEECAAAACXBIWXMAAAsTAAALEwEAmpwYAAAE4Ul..."/>
+                </defs>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
