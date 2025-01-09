@@ -30,7 +30,7 @@ import {
   units!: number;
   
   productName!: string;
-  
+  PaymentStatus!: string;
   text!: string;
   static productWithQty: { productId: string; qty: number; price: number; }[];
   Color!: String;

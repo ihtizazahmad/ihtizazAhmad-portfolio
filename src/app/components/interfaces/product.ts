@@ -1,12 +1,11 @@
-
 export interface Product  {
     _id: string;
     categoryName:string;
     categoryParents: string;
     barCode: string;
     name: string;
+    modifiers:any;
     price: number;
-    cartitemsubtotal:number;
     retailPrice: number;
     inHouseTaxValue?: number;
     takeawayTaxValue?: number;
@@ -24,7 +23,7 @@ export interface Product  {
     productType: any
     Product_pic:string
     userId:any
-}
+  }
 export interface productWithQty{
     price: number;
     productId: string;

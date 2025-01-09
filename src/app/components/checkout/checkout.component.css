@@ -38,8 +38,29 @@
     border-color: #028643;
     box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
   }
-  
+  textarea{
+    padding-top: .8rem !important;
+  }
   .form-control{
     height: 50px;
     border-radius: 24px;
+  }
+  .btn-order {
+    color: #ffffff !important;
+    border-width: 0px !important;
+    background-color: #e72929;
+    padding: 10px 1.3rem;
+    font-size: 1rem;
+  }
+  
+  .btn-Goback {
+    color: #ffffff !important;
+    border-width: 0px !important;
+    background-color: #198754;
+    padding: 10px 1.3rem;
+    font-size: 1rem;
+  }
+  
+  .btn-link{
+    color:#198754;
   }

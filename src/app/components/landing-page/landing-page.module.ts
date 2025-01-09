@@ -7,6 +7,8 @@ import { CategoriesComponent } from './categories/categories.component';
 import { AdvertisementComponent } from './advertisement/advertisement.component';
 import { StatsComponent } from './stats/stats.component';
 import { JumbotronComponent } from './jumbotron/jumbotron.component';
+import { CategoryService } from 'src/app/services/category.service';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -20,6 +22,10 @@ import { JumbotronComponent } from './jumbotron/jumbotron.component';
     CommonModule,
     LandingPageRoutingModule,
     JumbotronComponent
+  ],
+  providers:[
+    HttpClientModule,
+    CategoryService,
   ]
 })
 export class LandingPageModule { }

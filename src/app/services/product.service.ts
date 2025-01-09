@@ -13,23 +13,23 @@ export class ProductService {
   public apiUrl = environment.apiUrl
   productUrl = this.apiUrl +  '/Product'
   reviewUrl = this.apiUrl + '/review'
-  getdeviceUrl = this.apiUrl + '/device'
+  getdeviceUrl = this.apiUrl + '/device';
+  userId = '674ba2d30e062b07414d6704'; 
+
+  //  for test mode-->
+  //  userId = '65d6e2acf4cb2c368afded71'; 
   constructor(private http:HttpClient,) { }
 
   
-  getProducts():Observable<Product> {
-
-    if (this.checkoutData.length > 0) {
-      return of(this.checkoutData);
-    } else{
-      return this.http.get<Product>(this.productUrl)
-    }
+  getProducts():Observable<Product[]> {
+      return this.http.get<Product[]>(this.productUrl + `?userId=${this.userId}`)
+    
    }
    getProductById(id: string): Observable<Product>{
      return this.http.get<Product>(this.productUrl +'/'+ id )
    }
-   getrestaurantById(id:any){
-    return this.http.get(`${this.getdeviceUrl}/${id}`)
+   getrestaurantById(){
+    return this.http.get(`${this.getdeviceUrl}/?userId=${this.userId}`)
   }
    
   setCheckoutData(data: any) {

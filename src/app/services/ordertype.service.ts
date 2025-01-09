@@ -7,26 +7,64 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class OrdertypeService {
-  constructor(private http : HttpClient){}
-  apiurl= environment.apiUrl;
-  postorderurl = this.apiurl+'/orderitem'
-  selectedCardTitle: string = '';
-  updateSelectedCardTitle(title: string) {
-    this.selectedCardTitle = title;
-  }
-  makePayments(stripeToken: any, userId: any,superUserId:any): Observable<any> {
-    const url = `${this.apiurl}/credit`
-    const body ={
-      stripeToken,
-      userId,
-      superUserId
+  apiUrl = environment.apiUrl;
+  orderUrl = this.apiUrl + '/orderitem';
+  selectedCard: string = '';
+  receiptUrl = this.apiUrl + '/sendCourseEmail';
+
+  constructor(private http: HttpClient) {}
+  
+    // Updates the currently selected card title
+    updateSelectedCard(title: string): void {
+      this.selectedCard = title;
     }
-    return this.http.post<any>(url,body)
-  }
-postOrder(orderData : any){
- return this.http.post(this.postorderurl, orderData)
-}
-getOrder(){
-  return this.http.get(this.postorderurl)
-}
+  
+    // Creates a new order by sending orderData to the backend
+    createOrder(orderData: any): Observable<any> {
+      return this.http.post(this.orderUrl, orderData);
+    }
+  
+    // Retrieves all orders from the backend
+    getOrder(): Observable<any> {
+      return this.http.get(this.orderUrl);
+    }
+  
+    sendReciept(email:string, recieptContent: any):Observable<any>{
+      const payload = {
+        email:email,
+        recieptContent:recieptContent
+      }
+      return this.http.post(this.receiptUrl, payload);
+    }
+    
+    // Initiates a payment process with Stripe using a payment token
+    makePayments(
+      stripeToken: any,
+      userId: string,
+      superUserId: string
+    ): Observable<any> {
+      const url = `${this.apiUrl}/credit`;
+      const body = { stripeToken, userId, superUserId };
+      return this.http.post<any>(url, body);
+    }
+  
+    // Creates a payment intent with Stripe
+    paymentIntent(data: any): Observable<any> {
+      const url = `${this.apiUrl}/paymentIntent`;
+      return this.http.post<any>(url, data);
+    }
+  
+    // Captures a payment after successful payment intent
+    capturePaymentIntent(paymentIntentId: string): Observable<any> {
+      const url = `${this.apiUrl}/capture_payment`;
+      const body = { payment_intent_id: paymentIntentId };
+      return this.http.post<any>(url, body);
+    }
+  
+    // Creates an invoice for a payment
+    createInvoice(invoiceData: any): Observable<any> {
+      const url = `${this.apiUrl}/create-invoice`;
+      return this.http.post<any>(url, invoiceData);
+    }
+  
 }

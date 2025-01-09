@@ -29,7 +29,7 @@ constructor(private http : HttpClient, ) {
 apiUrl = environment.apiUrl;
 userLogUrl = this.apiUrl+ '/clogin'
 userRegUrl = this.apiUrl+ '/cregister'
-getcustomerurl = this.apiUrl + '/customer'
+getCustomerUrl = this.apiUrl + '/customer'
 devicesUrl = this.apiUrl + '/device'
 userGetUrl=this.apiUrl + '/user'
 
@@ -105,26 +105,25 @@ logout(){
   }
 
 
-  getcustomerById(_id:string):Observable<user>{
-    return this.http.get<user>(`${this.getcustomerurl}/${_id}`)
+  getUserById(_id:string):Observable<any>{ 
+    return this.http.get<any>(`${this.userGetUrl}/${_id}`)
   }
 
-
-  getcustomer():Observable<user>{
-    return this.http.get<user>(this.getcustomerurl)
+  
+  getCostumer():Observable<any>{
+    return this.http.get<any>(this.getCustomerUrl)
 
   }
-
   postCustomer(newCustomerData:any){
-    return this.http.post(this.getcustomerurl,newCustomerData)
+    return this.http.post(this.getCustomerUrl,newCustomerData)
+  }
+  // getRestaurantById(){
+  //   return this.http.get(`${this.devicesUrl}?userId=${this.userId}`)
+  // }
+
+  sendMessage(formData: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/recive-mail`, formData);
   }
 
-  getDevices(){
-  return this.http.get(this.devicesUrl)
-  }
-
-  getUserById(_id:string):Observable<user>{ 
-    return this.http.get<user>(`${this.userGetUrl}/${_id}`)
-  }
 }
 

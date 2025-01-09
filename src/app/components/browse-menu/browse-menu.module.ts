@@ -19,7 +19,7 @@ import { CategoryService } from 'src/app/services/category.service';
     ProductsComponent,
     ProductsJumbotronComponent,
     ModifiersComponent,
-    AddRequestComponent
+    AddRequestComponent,
   ],
   imports: [
     CommonModule,

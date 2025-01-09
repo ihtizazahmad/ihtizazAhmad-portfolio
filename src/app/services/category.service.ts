@@ -10,6 +10,10 @@ import { Category } from '../components/interfaces/category';
 export class CategoryService {
   public apiUrl = environment.apiUrl
   parentcategoryUrl = this.apiUrl + '/parentcategory';  
+  categoryUrl = this.apiUrl + '/category'; 
+  userId = '674ba2d30e062b07414d6704'; 
+  //  for test mode-->
+  //  userId = '65d6e2acf4cb2c368afded71'; 
   constructor(private http:HttpClient,) { }
 
   
@@ -26,4 +30,10 @@ export class CategoryService {
   //   let Userid:any =  this.securityService.getUserData()?._id;
   //   return this.http.get<any>(this.apiUrl + '/parentcategory'+`?userId=${Userid}`);
   // }
+
+  // Sub Categories
+
+  getSubCategories(): Observable<Category[]>{
+    return this.http.get<Category[]>(this.categoryUrl + `?userId=${this.userId}`)
+  }
 }
