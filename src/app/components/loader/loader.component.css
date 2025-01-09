@@ -1,0 +1,40 @@
+/* loader */
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.loader-container {
+  position: relative;
+}
+
+.loader {
+  border: 8px solid #ce9226;
+  border-top: 8px solid #b42278;
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  animation: spin 1.5s linear infinite;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes spin {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.logo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px; /* Adjust the width as needed */
+  height: auto; /* Maintain aspect ratio */
+}

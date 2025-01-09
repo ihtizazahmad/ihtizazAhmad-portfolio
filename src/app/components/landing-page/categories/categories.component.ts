@@ -1,51 +1,43 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { CategoryService } from 'src/app/services/category.service';
 
 @Component({
   selector: 'app-categories',
   templateUrl: './categories.component.html',
   styleUrls: ['./categories.component.css']
 })
-export class CategoriesComponent {
+export class CategoriesComponent implements OnInit {
 
-  constructor(private router:Router){}
-  gotobrowsermenu(){
-    this.router.navigate(['/browse-menu'])
+  allCategories: any[] = [];
+  loader: boolean = false;
+  constructor(private router:Router, private categoryService : CategoryService){}
+  
+  
+  ngOnInit(): void {
+    this.loadSubCategories();
   }
   
-  categories = [
-    { img: '../../../../assets/burgers.png' ,
-      name:'Burgers & Fast food',
-      totalitems:'21'
-    },
-    { img: '../../../../assets/salad.png' ,
-      name:'Salads',
-      totalitems:'32'
-    },
-    { img: '../../../../assets/pasta.png' ,
-      name:'Pasta & Casuals',
-      totalitems:'4'
-    },
-    { img: '../../../../assets/pizza.png' ,
-      name:'Pizza',
-      totalitems:'32'
-    },
-    { img: '../../../../assets/breakfast.png' ,
-      name:'Breakfast',
-      totalitems:'13'
-    },
-    { img: '../../../../assets/soup.png' ,
-      name:'Soups',
-      totalitems:'22'
-    },
-    { img: '../../../../assets/burgers.png' ,
-      name:'Burgers & Fast food',
-      totalitems:'21'
-    },
-    { img: '../../../../assets/salad.png' ,
-      name:'Salads',
-      totalitems:'32'
-    }
-  ]
 
+private loadSubCategories() {
+  this.loader = true; 
+  this.categoryService.getSubCategories().subscribe(
+    (categories) => {
+      console.log("getting all subCategories :", categories);
+      this.allCategories = categories;
+      this.loader = false; 
+    },
+    (error) => {
+      console.error("Error fetching subCategories", error);
+      this.loader = false; 
+    }
+  );
+}
+
+  
+  loadProdcutByCategory(name: any){
+    if(name){
+      this.router.navigate(['/browse-menu/products', name])
+    }
+  }
 }

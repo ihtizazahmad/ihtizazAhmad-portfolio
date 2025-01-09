@@ -8,6 +8,10 @@ import { ProductsJumbotronComponent } from './products-jumbotron/products-jumbot
 import { ModifiersComponent } from './modifiers/modifiers.component';
 import { MaterialModule } from 'src/app/material';
 import { AddRequestComponent } from './add-request/add-request.component';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { SharedService } from 'src/app/services/shared.service';
+import { ProductService } from 'src/app/services/product.service';
+import { CategoryService } from 'src/app/services/category.service';
 
 
 @NgModule({
@@ -15,13 +19,20 @@ import { AddRequestComponent } from './add-request/add-request.component';
     ProductsComponent,
     ProductsJumbotronComponent,
     ModifiersComponent,
-    AddRequestComponent
+    AddRequestComponent,
   ],
   imports: [
     CommonModule,
     BrowseMenuRoutingModule,
     JumbotronComponent,
-    MaterialModule
+    MaterialModule,
+    HttpClientModule,
+  ],
+  providers:[
+    HttpClient,
+    ProductService,
+    CategoryService,
+SharedService
   ]
 })
 export class BrowseMenuModule { }
