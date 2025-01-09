@@ -488,14 +488,14 @@ export class CheckoutComponent implements OnInit {
 
   makePayment(formData: any, order: any, status: any) {
     console.log('fromData :', formData);
-    // Swal.fire({
-    //   title: 'Orders are temporarily unavailable due to ongoing work in the background. Please try again later.',
-    //   icon: 'warning',
-    //   confirmButtonText: 'OK',
-    // }).then(() => {
-    //    this.router.navigate(['/']);
-    // });
-    // return ;
+    Swal.fire({
+      title: 'Orders are temporarily unavailable due to ongoing work in the background. Please try again later.',
+      icon: 'warning',
+      confirmButtonText: 'OK',
+    }).then(() => {
+       this.router.navigate(['/']);
+    });
+    return ;
     if (
       !formData ||
       !formData.value ||
