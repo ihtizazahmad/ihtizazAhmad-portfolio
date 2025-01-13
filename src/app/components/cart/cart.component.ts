@@ -42,7 +42,11 @@ export class CartComponent implements OnInit {
       this.gettax();
     });
   }
-
+  onImageError(event: Event): void {
+    const target = event.target as HTMLImageElement;
+    target.src = '../../../assets/no-photo.png';
+  }
+  
   removeProduct(cartItem: cartItem, index: number) {
     this.cartService.removeFromCart(cartItem.food._id, index);
     this.calculateTotalModifierPrice();

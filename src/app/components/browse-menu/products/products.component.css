@@ -1,6 +1,6 @@
 .categories {
   height: 96px;
-  background: #fc8a06;
+  background: #83d51a;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -10,6 +10,15 @@
     width: 0px;
     height: 0px;
 } */
+ .my-category{
+  width: 100%;
+  overflow: scroll;
+  padding: 0px 20px;
+ }
+ .my-category::-webkit-scrollbar{
+  width: 0px;
+  height: 0px;
+ }
 .category-btn {
   font-size: 21px;
   font-weight: 700;
@@ -25,7 +34,7 @@
   padding: 0px 20px;
 }
 .active {
-  background-color: #03081f;
+  background-color: #ff3131;
 }
 .container-fluid {
   max-width: 100%;

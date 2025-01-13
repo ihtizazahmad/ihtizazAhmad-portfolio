@@ -24,18 +24,18 @@
     border-radius: 8px;
     padding: 0px 30px;
     color: white;
-    background: #FC8A06;
+    background: #83d51a;
     font-size: 20px;
     font-weight: 600;
     line-height: 36px;
 
 }
   .bg-success{
-    background-color: #028643 !important;
+    background-color: #83DF1A !important;
   }
   input:focus,
   textarea:focus {
-    border-color: #028643;
+    border-color: #83DF1A;
     box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
   }
   textarea{
@@ -48,7 +48,7 @@
   .btn-order {
     color: #ffffff !important;
     border-width: 0px !important;
-    background-color: #e72929;
+    background-color: #ff3131;
     padding: 10px 1.3rem;
     font-size: 1rem;
   }
@@ -56,11 +56,11 @@
   .btn-Goback {
     color: #ffffff !important;
     border-width: 0px !important;
-    background-color: #198754;
+    background-color: #83d51a;
     padding: 10px 1.3rem;
     font-size: 1rem;
   }
   
   .btn-link{
-    color:#198754;
+    color:#ff3131;
   }
