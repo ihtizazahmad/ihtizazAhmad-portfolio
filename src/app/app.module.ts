@@ -12,6 +12,8 @@ import { CheckoutComponent } from './components/checkout/checkout.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ProductService } from './services/product.service';
+import { AboutUsComponent } from './components/about-us/about-us.component';
+import { ContactUsComponent } from './components/contact-us/contact-us.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,9 @@ import { ProductService } from './services/product.service';
     HeaderComponent,
     FooterComponent,
     CartComponent,
-    CheckoutComponent
+    CheckoutComponent,
+    AboutUsComponent,
+    ContactUsComponent
   ],
   imports: [
     BrowserModule,

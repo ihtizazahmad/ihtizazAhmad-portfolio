@@ -1,0 +1,53 @@
+.container {
+    color: #333;
+  }
+
+  h1, h2, h3 {
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+
+  .text-muted {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+  }
+
+  .text-primary-red {
+    color: #ff3131;
+  }
+
+  p {
+    line-height: 1.8;
+    margin-bottom: 20px;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .btn-primary {
+    background-color: #83DF1A;
+    border-color: #83DF1A;
+    border-radius: 2rem;
+    font-size: 17px;
+  }
+
+  .btn-primary:hover {
+    background-color: #ff3131;
+    border-color: #ff3131;
+  }
+
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 2rem;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+    }
+
+    p {
+      font-size: 1rem;
+    }
+  }

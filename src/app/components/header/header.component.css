@@ -45,6 +45,11 @@
     background: #ff3131;
     color: white;
     border-radius: 50%;
+    height: 30px;
+    width: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     /* padding: 0.2rem 0.5rem; */
   }
 .rotate-up {
