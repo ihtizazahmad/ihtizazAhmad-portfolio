@@ -1,7 +1,7 @@
 <mat-dialog-content class="p-0">
   <div class="customize-pizza-dialog">
     <div class="header-image">
-      <img src="../../../../assets/modifierpizza.png" alt="Pizza" class="img-fluid" />
+      <img [src]="this.data?.product?.Product_pic" alt="Pizza" class="img-fluid" />
       <button mat-icon-button class="close-btn" mat-dialog-close>
         <mat-icon>close</mat-icon>
       </button>
@@ -13,8 +13,8 @@
       <div class="text-center my-3">
         <h5 class="text-orange fw-bold">Please select your Modifiers!</h5>
       </div>
-      <div class="topping-section mb-4">
-        <div class="section-header">
+      <div class="topping-section mb-4" *ngFor="let modifiers of data?.modifiers">
+        <div class="section-header" *ngFor="let category of modifiers.categories">
           <span class="icon">
             <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg"
               xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -28,68 +28,26 @@
               </defs>
             </svg>
           </span>
-          <h6>Vegetable Toppings</h6>
+          <h6>{{category?.name}}</h6>
         </div>
-        <div class="row">
-          <div class="col-lg-4 col-md-6" *ngFor="let topping of vegetableToppings">
-            <mat-checkbox color="primary">{{ topping }}</mat-checkbox>
+        <div class="row" *ngFor="let category of modifiers.categories">
+          <div class="col-lg-4 col-md-6" *ngFor="let subcategory of category.subcategories">
+            <mat-checkbox color="primary" [(ngModel)]="subcategory.selected" > {{ subcategory.name }} - {{ subcategory.price | currency }}</mat-checkbox>
           </div>
         </div>
+      </div>
+      <div class="row">
+      <div class="text-center my-3">
+          <h5 class="text-orange fw-bold">Add your special request</h5>
       </div>
       <div class="topping-section mb-4">
-        <div class="section-header">
-          <span class="icon">
-            <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg"
-              xmlns:xlink="http://www.w3.org/1999/xlink">
-              <rect width="45" height="45" fill="url(#pattern0_17_1862)" />
-              <defs>
-                <pattern id="pattern0_17_1862" patternContentUnits="objectBoundingBox" width="1" height="1">
-                  <use xlink:href="#image0_17_1862" transform="scale(0.0111111)" />
-                </pattern>
-                <image id="image0_17_1862" width="90" height="90"
-                  xlink:href="data:image/png;base64,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" />
-              </defs>
-            </svg>
-          </span>
-          <h6>Meat Toppings</h6>
-        </div>
-        <div class="row">
-          <div class="col-lg-4 col-md-6" *ngFor="let topping of meatToppings">
-            <mat-checkbox color="primary">{{ topping }}</mat-checkbox>
-          </div>
-        </div>
+          <textarea name="" class="form-control" id="" rows="3" [(ngModel)]="notes" placeholder="Write your special instructions here..."></textarea>
       </div>
-      <div class="topping-section mb-4">
-        <div class="section-header">
-          <span class="icon">
-            <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg"
-              xmlns:xlink="http://www.w3.org/1999/xlink">
-              <rect width="45" height="45" fill="url(#pattern0_17_1893)" />
-              <defs>
-                <pattern id="pattern0_17_1893" patternContentUnits="objectBoundingBox" width="1" height="1">
-                  <use xlink:href="#image0_17_1893" transform="scale(0.0111111)" />
-                </pattern>
-                <image id="image0_17_1893" width="90" height="90"
-                  xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFoAAABaCAYAAAA4qEECAAAACXBIWXMAAAsTAAALEwEAmpwYAAAFcklEQVR4nO2cW2gcVRiAj+ffnf/fJDZWSUva3f/fpFskAS8QxAvqiw+CPqgIPogo3kBBEPECCl5fvJSgRVR8EPqkoohgfeiDPgjeUSxFKt5FW401VdSm0ZLsyplJSbG7O7fNntmZ88FPXjL/zvnmzJkz5zJKORwOh8PhcDgcDofD4XA4HA6Hwz4NBJTHAeVnIGkByd+A8juQfKeRP9QkOwFlm0a5oVSpn61UY53tMx5IwEgOBEcP5B8B5RWNfLNCqdsuw0AAqzU5RfBXQPwsIF+klNK2y5RJILXk/9d22Qck28vlidNtly3fomk1NMp7UOErXS1Xayv6mPhWe7XblRJSRQX6I/pos/KTRrnF/KwqGtBP0asPzy/A40tVkQArolfacJKdytu8VeUdwPrFNkWvxGFNcmc+m5NRXg8kzwNJMwOig9qN/IHyZErlBajI5YDym22x7YMXNfJtarCpVsyLhH2ZkWr360rJSWrgQJ7QJHtsC4wZX5eH5Ew1KJSodj4g/5oBccmaEpKr12C4kmcBec4f6EF5TKmZcpqMGuVWID5iX1iqaGqS+3qmGUieOu5HkGeTZZspA/FzGZDU6lkg7zA3aHrRKAfb/MByqSLnxMs0PqSJd1kXQ70PTfKGeainE21mNton3xO9Cdk4rEnesi0E1lI28jtKTY6mEM17O19Jvis0wSiv18gf2RYB/ZH9vlJjI8lEI7/YJfmC6aJ1PHh4coMm3m1bAPRTNsnbiZoRM14bkvjNtgeONMa63Q2Q4wicxOyZlcvV00KTB7MVxzA+ZG4j2wUGm7KRX4vbGzkh9MUCZf/qdH8D8/7gg8jBL8Sq1YD8coTET5t/1Siv2i+gpI0FTXy/wtoWpaY981cTP2CGTuPm0sT3RBatUa6PkHTJX9SSA8mlDu8IJZJzE8hejj5r4z/YZCkDElprHX5N7lbpiB+Mn5f/VB5PR63V79qWAH2IoLnoAlYbyXLzXtNJCBdNfHchRKtpr7uJBibOj/xkeJX26qcWQjSG1Ghv89bkomXeiaZAhulddJMBKA+lqNEHQkWbbort2gb9icOmd9HOQYn4vCRdvNXgZ8JFm/Vq9iW0+iXb9C7Mgy/oR1cbQU3mxRQ5D6khHu9ueXhio98ftC+gNbCB8nCE2sw3Wj9RGuTgLyON6JlV9BGS/WUGv+0XSrIWy2YiOuqg0oGwhBr5JjOwpJE/y0DhWpkJlCeiSFblcv2MUMnEu8wF8Q8Y4nFA/sF6ASkrMy4Rx6V1Re4IuWLzxz1NPZ6OchdAngN5TlVqm1Svhkg11a7qeCe0n0EvQPBiieoXRpbsizaLsztftZe6HVse4hlA/sN+waWfsQQVuSKW5G7LDfxZlXXVk8OOL1WqZ2V3laj0Opr+HsckdLj9m+DJJZGTeDLlb7a0L6K1lqFJ7k0kORDNsx2mreJBW2pdmyEa6GiaToPqwZ7sbYD8S7DQkR9NvN3gxE2n5G/ilo9o4mtUBgGzIhWsC+pJLMRqQm2gqX5dytEwu4E812k4NXt4MqVRPrUuLWZolE8U1UUNFtPeyicjBmEY1uwW2x4+r5hhSlS7QJN8nuWmIvPtcQxK/qLKjL1NmtVXZvJD5Y7hyQ3Bxk7+124tln3g1S9TuYfMS46/B3Ghv5L5n2AcuWjfaRppjAHKI/14jfc3bfqTssVG+/sTTS1Hme+x5GaslZ/FQaiHkpfMBLTtEmUW6I3kQ4nGj4sEpJf8jdk6YrscmQdS73hNsS+wSECyrtv3xegb2/raI8rBYANqA22fdy6/X6pRPjZ7cFLv1S42jaNf5N3v9x7MBwPN/kbkHZpq15o3S9tn6HA4HA6Hw+FwOBwOh8OhCsJ/aWzdpm9HLPEAAAAASUVORK5CYII=" />
-              </defs>
-            </svg>
-          </span>
-          <h6>Seafood Toppings</h6>
-        </div>
-        <div class="row">
-          <div class="col-lg-4 col-md-6" *ngFor="let topping of seafoodToppings">
-            <mat-checkbox color="primary">{{ topping }}</mat-checkbox>
-          </div>
-        </div>
-      </div>
-      <div class="total-to-pay mb-4">
-        <span class="label">Total to pay</span>
-        <span class="price fw-bold">$127.90</span>
       </div>
       <div class="footer d-flex justify-content-end align-items-center">
         <div class="buttons d-flex gap-3">
-          <button class="btn take-btn me-2" mat-dialog-close>Take me back</button>
-          <button class="btn btn-success" mat-dialog-close (click)="openDialog()">
+          <button class="btn take-btn me-2" (click)="close()">Skip</button>
+          <button class="btn btn-success" (click)="apply()">
             <svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg"
               xmlns:xlink="http://www.w3.org/1999/xlink">
               <rect width="35" height="35" fill="url(#pattern0_17_1703)" />
@@ -101,7 +59,7 @@
                   xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFoAAABaCAYAAAA4qEECAAAACXBIWXMAAAsTAAALEwEAmpwYAAAD50lEQVR4nO2dSWsVQRDHG4xGUfRoYgSV6BeIelIxiAseRD2oYBSM2yWBGEN88ebN5RQCfg3XQ0Q/gCKRmOTiRb0Yt6yefA8Sf1KkxRyyaXp6ambqB3N5zJtX/adfd1d1dY1zhmEYhmEYhmEYxtIAVgC7gUvAPeARMAi8B8aBir/G/WeD/p67/ju75BlL/LliAWwGrgFPgR8sn0ngCdAG1LkiA6wBzgMvgGmSYwp4DpwDVruiAKzzPW2Y+HwHbgEbXF4BVgKdwBjpIzZ0iE0uTwD7gCH08Q446LKOjInAfeAXehHbeoBql0WArcArssMbYLvLEvJ3DLRMi40sCw+4LACcBH6SXSrAGacZ4GrCa+JYSBuuOI0AJ7xzkBemgdNOEzKuAWXyRwU47DQA7MjoxPcvE2R92iJX+2VR3ulLdZ3tnZGi0JOmW63Z4wuNtHV/bJGrgAGKx1DUQJSPwhWV9pjx5FGKy6hoEEPoUtotVUBHjO2nr0ociRJQ469SZIfpc6LbYn6PTwOlOWw7GlnspiSFlo1UDdTMY9+RiJHD3qRErlMUNKpZwM5YYk8nksrg8y600LWIrbGGkdYkhJbkFi2URUwFYj9MIk1rAl1UgGOL2J30MDIRNP3M58JppKygZ+8MKfRl9FJJuWc3hxRasjo1U0lR7NshhX6Mfiopif0gpNBZCYmWUxiz+0MK/TFgr+sEaoMZ93/tCSn2h5CGhQqL3nBKEKcnUJtGQholPTEEtU4JwMZAbSprFHqTU4LYolHo0aTCm2kB3NQ4dIScDEtp92zNk6Et7yIt78xhieSwmAseyQWXE6laqaQcVLoQUmgLk85PQ0ihLfAfI/DvxZaz1VooKwj4h50IZxkux4q1UFIgstCSlMtq6QZ/mVoo7WG5YkuVAA3U5DaBxjdESjGozOsgfkrY2aSTHL+gY+3cJWFXf3VFFnk48dofBU9C/8P1REX2Qq+V0CDFZTRKIroXW4qKFJW2KCLPOiz0luIxFL1qDbDXjr9FwlduKQrdsXSd74iyHN/NO6+BVakJ7cWu9wfT88oEsM1pAGjMeNWZhRyjQ04TwHFFQadQZ1ROOY1IeZyclPqZkpxwpxlf8ifLw0hZXYmfRUr/TGZ04mt0WQLYArwkO/SlXtJnmevsHuUepNjWnfo6OaC7PoA+xKY9Lk8wE4hqVxJiHfGbzVUurzATz5ZGfkpB4G++UPd6VxSYKXncBDxL2NGRZ/fKHl+hSs/Phd/3a5Wz1f5tFMtl3D+rJbGUgKzDTPpZA3ARuCPZQJKD7F8FMjbr9SBj/rN+f4/c2+y/a68HMQzDMAzDMAzDcEvkN6dJSbMs1VD2AAAAAElFTkSuQmCC" />
               </defs>
             </svg>
-            Next Step
+            Add
           </button>
         </div>
       </div>

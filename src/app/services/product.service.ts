@@ -14,6 +14,7 @@ export class ProductService {
   productUrl = this.apiUrl +  '/Product'
   reviewUrl = this.apiUrl + '/review'
   getdeviceUrl = this.apiUrl + '/device';
+  modifierUrl = this.apiUrl + '/categories1';
   userId = '674ba2d30e062b07414d6704'; 
 
   //  for test mode-->
@@ -37,5 +38,9 @@ export class ProductService {
   }
   getCheckoutData() {
     return this.checkoutData;
+  }
+
+  getModierByUserId():Observable<any>{
+    return this.http.get<any>(`${this.modifierUrl}?userId=${this.userId}`);
   }
 }

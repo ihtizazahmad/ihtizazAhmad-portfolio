@@ -24,6 +24,7 @@ export class ProductsComponent implements OnInit {
   activeCategory: string = 'All'; 
   catName: any = '';
   noProducts: boolean = false;
+  modifiers: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -41,6 +42,7 @@ export class ProductsComponent implements OnInit {
     });
     this.loadProducts();
     this.getCategory();
+    this.getModifiers();
   }
 
   openDialog(data: any): void {
@@ -61,9 +63,8 @@ export class ProductsComponent implements OnInit {
         console.log("getting all products by user id:", res);
         this.allProducts = res;
         this.filteredProducts = [...this.allProducts];
-
         if (this.catName) {
-          this.showProducts(this.catName); // Filter products after loading
+          this.showProducts(this.catName); 
         }
         this.noProducts = this.filteredProducts.length === 0;
       },
@@ -88,7 +89,6 @@ export class ProductsComponent implements OnInit {
         product.categoryId && product.categoryId[0]?.name === category
       );
     }
-
     this.noProducts = this.filteredProducts.length === 0;
     console.log("Filtered products:", this.filteredProducts);
   }
@@ -101,7 +101,24 @@ export class ProductsComponent implements OnInit {
   }
 
   addProduct(data: any): void {
-    this.cartService.addToCart(data);
+    let filtermodifier = this.modifiers.filter((i: any) => i?.productId?._id == data._id)
+    console.log("modidifer", filtermodifier)
+    if (filtermodifier.length > 0) {
+      this.openModifierModal(data, filtermodifier);
+    } else {
+      this.cartService.addToCart(data);
+    }
+  }
+
+  openModifierModal(product: any, modifiers: any[]): void {
+    const dialogRef = this.dialog.open(ModifiersComponent, {
+      data: { product, modifiers },
+      width:'50%',
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
   }
 
   getShortDescription(description: string | undefined, limit: number): string {
@@ -110,6 +127,18 @@ export class ProductsComponent implements OnInit {
     return words.length > limit 
       ? words.slice(0, limit).join(' ') + '...' 
       : description;
+  }
+
+  getModifiers(){
+    this.productService.getModierByUserId().subscribe({
+      next: (res : any) =>{
+        this.modifiers = res;
+        console.log("getting modifiers :", res)
+        console.log("getting modifiers :", this.modifiers)
+      }, error: (error: any) =>{
+        console.log("getting error :", error)
+      }
+    })
   }
   
 }

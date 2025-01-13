@@ -9,6 +9,7 @@ import { OrdertypeService } from 'src/app/services/ordertype.service';
 import Swal from 'sweetalert2';
 import { environment } from 'src/app/environment/environment';
 import { loadStripe, Stripe } from '@stripe/stripe-js';
+import { TaxService } from 'src/app/services/tax.service';
 
 @Component({
   selector: 'app-checkout',
@@ -59,6 +60,12 @@ export class CheckoutComponent implements OnInit {
   map: any;
   product: any[] = [];
   tax: number = 0;
+  taxId: any;
+  taxvalue: any;
+  taxName: any;
+  addtax: any;
+  defaultTax: any[] = [];
+  businessId = '674ba2d30e062b07414d6704';
 
   initMap() {
     this.map.locate({ setView: true, maxZoom: 15 });
@@ -110,16 +117,13 @@ export class CheckoutComponent implements OnInit {
     public productService: ProductService,
     private router: Router,
     private orderService: OrdertypeService,
-    private userService: UserService
+    private userService: UserService,
+    private taxService : TaxService
   ) {
     this.cartService.getCartObservable().subscribe((cart) => {
       console.log('getting cart observable:', cart);
       this.subtotal = cart.totalPrice;
       this.modifierPrice = cart.modifierPrice;
-      this.tax = cart?.taxvalue;
-      if (this.modifierPrice) {
-        this.total = this.subtotal + this.modifierPrice;
-      }
       this.product = cart.items;
       this.checkoutData = cart;
       this.productWithQty = this.product.map((x: any) => {
@@ -171,6 +175,34 @@ export class CheckoutComponent implements OnInit {
     if (this.userData) {
       this.total = this.subtotal + this.AppFee;
     }
+
+    this.getTax();
+  }
+
+  getTax() {
+    this.taxService.getTax().subscribe((res: any) => {
+      const applicableTaxes = res.filter(
+        (item: any) => item?.userId === this.businessId
+      );
+      console.log('Filtered applicable taxes:', applicableTaxes);
+      let totalTaxPercentage = applicableTaxes.reduce(
+        (sum: number, tax: any) => sum + Number(tax.taxValue),
+        0
+      );
+      console.log("first find tatal tax:", totalTaxPercentage)
+      console.log("first find tatal tax:", this.subtotal)
+      this.addtax = (this.subtotal * totalTaxPercentage) / 100;
+      this.defaultTax = [];
+      applicableTaxes.forEach((tax: any) => {
+        const taxValue = Number(tax.taxValue);
+        const taxAmount = (this.subtotal * taxValue) / 100;
+        this.defaultTax.push({
+          name: tax.name,
+          addtax: taxAmount,
+        });
+      });
+      console.log("stufion  : ", this.addtax)
+    });
   }
 
   onSubmit() {
@@ -488,14 +520,14 @@ export class CheckoutComponent implements OnInit {
 
   makePayment(formData: any, order: any, status: any) {
     console.log('fromData :', formData);
-    // Swal.fire({
-    //   title: 'Orders are temporarily unavailable due to ongoing work in the background. Please try again later.',
-    //   icon: 'warning',
-    //   confirmButtonText: 'OK',
-    // }).then(() => {
-    //    this.router.navigate(['/']);
-    // });
-    // return ;
+    Swal.fire({
+      title: 'Orders are temporarily unavailable due to ongoing work in the background. Please try again later.',
+      icon: 'warning',
+      confirmButtonText: 'OK',
+    }).then(() => {
+       this.router.navigate(['/']);
+    });
+    return ;
     if (
       !formData ||
       !formData.value ||

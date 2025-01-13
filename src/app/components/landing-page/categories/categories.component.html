@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-lg-3 col-md-6 mb-3" *ngFor="let category of allCategories" (click)="loadProdcutByCategory(category.name)">
             <div class="card">
-                <img [src]="category.img ?? '../../../../assets/no-image'" alt="">
+                <img [src]="category.img ?? '../../../../assets/no-photo.png'" alt="">
                 <div class="p-3">
                     <h2 class="mb-1">{{category.name}}</h2>
                     <p *ngIf="category.totalitems" class="mb-0">{{category.totalitems}} Total Items</p>
@@ -11,7 +11,7 @@
             </div>
         </div>
     </div>
-    <div class="loader-container" *ngIf="loader">
+    <div class="loader-container d-flex justify-content-center" *ngIf="loader">
         <div
           class="spinner-grow"
           style="width: 3rem; height: 3rem; color: #aa5f71"
