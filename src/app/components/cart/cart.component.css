@@ -13,7 +13,7 @@ h2 {
     width: 280px;
     height: 70px;
     border-radius: 8px;
-    background: #028643;
+    background: #83D51A;
     font-size: 32px;
     font-weight: 600;
     line-height: 48px;
@@ -31,7 +31,7 @@ h5 {
     width: 250px;
     height: 55px;
     border-radius: 8px;
-    background: #028643;
+    background: #83D51A;
     font-size: 24px;
     font-weight: 600;
     line-height: 36px;
@@ -42,7 +42,7 @@ h5 {
     width: 45px;
     height: 45px;
     border-radius: 50%;
-    background-color: #FC8A06;
+    background-color: #ff3131;
     color: white;
     font-size: 24px;
     font-weight: 700;
@@ -50,13 +50,13 @@ h5 {
 }
 
 .price {
-    color: #028643;
+    color: #ff3131;
 }
 
 .total-to-pay {
     display: inline-flex;
     align-items: center;
-    background-color: #FC8A06;
+    background-color: #ff3131;
     padding: 10px 20px;
     border-radius: 8px;
     color: #fff;

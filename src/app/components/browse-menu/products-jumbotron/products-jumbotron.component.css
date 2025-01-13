@@ -24,7 +24,7 @@ h1 {
 }
 
 .text-orange {
-    color: #FC8A06;
+    color: #83d51a;
 }
 
 input[type="text"] {
@@ -35,7 +35,7 @@ input[type="text"] {
 }
 
 .btn-orange {
-    background-color: #FC8A06;
+    background-color: #83d51a;
     color: white;
     border-radius: 25px;
     height: 45px;
@@ -50,7 +50,7 @@ input[type="text"] {
 }
 .back-div{
     border-radius: 200px 0px 0px 200px;
-    background-color: #FC8A06;
+    background-color: #83d51a;
 }
 
 .input-div{

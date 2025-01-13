@@ -18,7 +18,7 @@
     position: absolute;
     top: 10px;
     right: 10px;
-    background-color: #FC8A06;
+    background-color: #83d51a;
     color: #fff;
 }
 
@@ -29,7 +29,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #FC8A06;
+    background-color: #83d51a;
     z-index: 999
 }
 
@@ -53,7 +53,7 @@ h6 {
 }
 
 .text-orange {
-    color: #FC8A06;
+    color: #83d51a;
 }
 
 .section-header {
