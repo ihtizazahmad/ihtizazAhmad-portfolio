@@ -61,9 +61,8 @@ export class ProductsComponent implements OnInit {
         console.log("getting all products by user id:", res);
         this.allProducts = res;
         this.filteredProducts = [...this.allProducts];
-
         if (this.catName) {
-          this.showProducts(this.catName); // Filter products after loading
+          this.showProducts(this.catName); 
         }
         this.noProducts = this.filteredProducts.length === 0;
       },
@@ -88,7 +87,6 @@ export class ProductsComponent implements OnInit {
         product.categoryId && product.categoryId[0]?.name === category
       );
     }
-
     this.noProducts = this.filteredProducts.length === 0;
     console.log("Filtered products:", this.filteredProducts);
   }
