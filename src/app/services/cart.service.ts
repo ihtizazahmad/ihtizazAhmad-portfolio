@@ -7,29 +7,52 @@ import { Product } from '../components/interfaces/product';
 import { Router } from '@angular/router';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CartService {
   private cartItems: any[] = [];
   private checkoutData: any = null;
-  private cartItemsChangedSubject: BehaviorSubject<void> = new BehaviorSubject<any>(null);
+  private cartItemsChangedSubject: BehaviorSubject<void> =
+    new BehaviorSubject<any>(null);
   private cart: cart = this.getCartFromLocalStorage();
   private cartSubject: BehaviorSubject<cart> = new BehaviorSubject(this.cart);
   cartItemsChanged = this.cartItemsChangedSubject.asObservable();
-  constructor(private router : Router){}
-
+  constructor(private router: Router) {}
 
   addToCart(food: Product): void {
     console.log('Attempting to add product:', food);
     console.log('Current cart:', this.cart);
-  
-    // Find the index of the item in the cart that matches the food _id
-    let cartItemIndex = this.cart.items.findIndex((item) => {
-      return item.food._id === food._id;
+    let cartItemIndex = this.cart.items.findIndex((item, index) => {
+      if (item.food._id !== food._id) return false;
+      if (
+        !item.food.modifiers ||
+        !food.modifiers ||
+        item.food.modifiers.length !== food.modifiers.length
+      ) {
+        return false;
+      }
+
+      return item.food.modifiers.every((modifier: any, index: number) => {
+        const foodModifier = food.modifiers[index];
+
+        if (modifier._id !== foodModifier._id) return false;
+
+        const cartSubcategories = modifier.subcategories || [];
+        const foodSubcategories = foodModifier.subcategories || [];
+
+        if (cartSubcategories.length !== foodSubcategories.length) {
+          return false;
+        }
+
+        const subcategoryMatch = cartSubcategories.map(
+          (subcategory: any, subIndex: number) =>
+            subcategory._id === foodSubcategories[subIndex]._id
+        );
+
+        return subcategoryMatch.every((match: any) => match);
+      });
     });
-  
-    console.log('Matching product index:', cartItemIndex);
-  
+
     if (cartItemIndex !== -1) {
       // If the product is already in the cart, update the quantity
       console.log('Product ID matched. Increasing quantity...');
@@ -60,12 +83,12 @@ export class CartService {
       });
       return;
     }
-  
+
     // If the product is not in the cart, add it as a new item
     console.log('Product not found in cart. Adding as new item...');
     this.cart.items.push(new cartItem(food));
     this.setCartToLocalStorage();
-  
+
     Swal.fire({
       title: 'Product Added to Cart!',
       text: `${food.name} has been added to your cart.`,
@@ -85,33 +108,33 @@ export class CartService {
       }
     });
   }
-  
 
   increaseProductQuantity(item: any, quantity: number) {
-    const index = this.cartItems.findIndex(cartItem => cartItem === item);
+    const index = this.cartItems.findIndex((cartItem) => cartItem === item);
     if (index !== -1) {
       this.cartItems[index].quantity += quantity;
       this.cartItemsChangedSubject.next();
     }
   }
 
-  productExists(item: any): boolean {   
-    return this.cartItems.some(cartItem => cartItem.ProductId === item.ProductId);
+  productExists(item: any): boolean {
+    return this.cartItems.some(
+      (cartItem) => cartItem.ProductId === item.ProductId
+    );
   }
 
   getCartItems(): any[] {
     return this.cartItems;
   }
- 
+
   getTotalQuantity(): number {
     return this.cartItems.reduce((total, item) => total + item.quantity, 0);
   }
 
-  
-
   removeFromCart(foodId: string, index: number): void {
     this.cart.items.splice(index, 1);
     this.setCartToLocalStorage();
+    this.cartSubject.next(this.cart);
   }
 
   setCheckoutData(data: any) {
@@ -139,6 +162,7 @@ export class CartService {
       });
     }
     this.setCartToLocalStorage();
+    this.cartSubject.next(this.cart);
   }
 
   private setCartToLocalStorage(): void {

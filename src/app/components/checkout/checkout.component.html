@@ -161,7 +161,7 @@
             </tr>
             <tr>
               <th>Tax</th>
-              <td>{{ tax || 0 | currency }}</td>
+              <td>{{ addtax || 0 | currency }}</td>
             </tr>
             <tr>
               <th>POS surcharges:</th>
@@ -169,7 +169,7 @@
             </tr>
             <tr>
               <th>Total</th>
-              <td>{{ total || 0 | currency }}</td>
+              <td>{{ (total + addtax  + modifierPrice) || 0 | currency }}</td>
             </tr>
           </tbody>
         </table>

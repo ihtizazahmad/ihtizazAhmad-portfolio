@@ -36,13 +36,23 @@
                                     <p class="fw-bold mb-0 price">{{item?.price | currency}}</p>
                                 </div>
                             </div>
+                            <div class="row" *ngIf="item.food.modifiers?.length > 0">
+                                    <div class="text-muted d-flex" *ngFor="let modifier of item.food.modifiers">
+                                        <strong>Modifiers:</strong>&nbsp; 
+                                        <div class="d-flex" *ngFor="let subModifier of modifier.subcategories">
+                                            <div>({{subModifier.name}} &nbsp;USD {{subModifier.price}})</div>
+                                        </div>
+                                    
+                                  </div>
+                            </div>
+                           
                         </div>
                         <div class="col-md-2 text-center">
                             <div class="input-group input-group-sm justify-content-center">
                                 <button 
                                     class="btn btn-outline-secondary" 
                                     type="button" 
-                                    (click)="decrement(item, item.quantity - 1, i)"
+                                    (click)="decrement(item, item.quantity, i)"
                                     [disabled]="item.quantity <= 1">-</button>
                                 <input 
                                     type="text" 

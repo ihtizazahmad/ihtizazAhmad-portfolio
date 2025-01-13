@@ -12,6 +12,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { SharedService } from 'src/app/services/shared.service';
 import { ProductService } from 'src/app/services/product.service';
 import { CategoryService } from 'src/app/services/category.service';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -26,6 +27,7 @@ import { CategoryService } from 'src/app/services/category.service';
     BrowseMenuRoutingModule,
     JumbotronComponent,
     MaterialModule,
+    FormsModule,
     HttpClientModule,
   ],
   providers:[
