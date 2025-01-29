@@ -85,6 +85,7 @@
           <textarea
             (input)="valueChanges()"
             (change)="addressFieldChange()"
+            (paste)="handlePaste($event)"
             [(ngModel)]="customerAdreesName"
             type="text"
             class="form-control"
