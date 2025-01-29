@@ -68,7 +68,7 @@ export class CheckoutComponent implements OnInit {
   businessId = '674ba2d30e062b07414d6704';
 
   initMap() {
-    this.map.locate({ setView: true, maxZoom: 15 });
+    this.map?.locate({ setView: true, maxZoom: 15 });
     if (this.businessData?.delivery === 'true') {
       if (
         this.defaultOfficelocation &&
@@ -235,6 +235,11 @@ export class CheckoutComponent implements OnInit {
       this.getCustomerLocation(inputValue);
     }
   }
+  handlePaste(event: ClipboardEvent) {
+    setTimeout(() => {
+      this.addressFieldChange();
+    }, 100); 
+  }
   capturePrintDataContent(): string {
     return this.printDataDiv?.nativeElement.innerHTML;
   }
@@ -346,7 +351,7 @@ export class CheckoutComponent implements OnInit {
                 const charges = this.total + this.FinaldistanceTax;
                 console.log('Applying $10 charges...', charges);
                 this.total = charges;
-                this.initMap();
+                // this.initMap();
               } else {
                 console.error(
                   'Failed to obtain office location coordinates. Check getLocationCoordinates function.'
@@ -416,7 +421,7 @@ export class CheckoutComponent implements OnInit {
             this.order.deliveryfee = this.FinaldistanceTax;
             const charges = this.total + this.FinaldistanceTax;
             this.total = charges;
-            this.initMap();
+            // this.initMap();
           } else {
             console.error(
               'Failed to obtain office location coordinates. Check getLocationCoordinates function.'
