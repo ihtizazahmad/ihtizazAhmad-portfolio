@@ -38,7 +38,6 @@ export class ProductsComponent implements OnInit {
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       this.catName = params.get('name');
-      console.log("getting cat name:", this.catName);
     });
     this.loadProducts();
     this.getCategory();
@@ -60,7 +59,6 @@ export class ProductsComponent implements OnInit {
     this.loader = true;
     this.productService.getProducts().subscribe(
       (res: any) => {
-        console.log("getting all products by user id:", res);
         this.allProducts = res;
         this.filteredProducts = [...this.allProducts];
         if (this.catName) {
@@ -79,7 +77,6 @@ export class ProductsComponent implements OnInit {
   }
 
   showProducts(category: any): void {
-    console.log("Category selected:", category);
     if (category === 'All' || !category) {
       this.activeCategory = 'All';
       this.filteredProducts = [...this.allProducts];
@@ -90,19 +87,16 @@ export class ProductsComponent implements OnInit {
       );
     }
     this.noProducts = this.filteredProducts.length === 0;
-    console.log("Filtered products:", this.filteredProducts);
   }
 
   getCategory(): void {
     this.categoryService.getSubCategories().subscribe((res: any) => {
       this.categories = res;
-      console.log("Filtered categories:", this.categories);
     });
   }
 
   addProduct(data: any): void {
     let filtermodifier = this.modifiers.filter((i: any) => i?.productId?._id == data._id)
-    console.log("modidifer", filtermodifier)
     if (filtermodifier.length > 0) {
       this.openModifierModal(data, filtermodifier);
     } else {
@@ -117,7 +111,6 @@ export class ProductsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
     });
   }
 
@@ -133,8 +126,6 @@ export class ProductsComponent implements OnInit {
     this.productService.getModierByUserId().subscribe({
       next: (res : any) =>{
         this.modifiers = res;
-        console.log("getting modifiers :", res)
-        console.log("getting modifiers :", this.modifiers)
       }, error: (error: any) =>{
         console.log("getting error :", error)
       }

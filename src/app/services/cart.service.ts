@@ -20,8 +20,6 @@ export class CartService {
   constructor(private router: Router) {}
 
   addToCart(food: Product): void {
-    console.log('Attempting to add product:', food);
-    console.log('Current cart:', this.cart);
     let cartItemIndex = this.cart.items.findIndex((item, index) => {
       if (item.food._id !== food._id) return false;
       if (
@@ -54,8 +52,6 @@ export class CartService {
     });
 
     if (cartItemIndex !== -1) {
-      // If the product is already in the cart, update the quantity
-      console.log('Product ID matched. Increasing quantity...');
       this.cart.items[cartItemIndex].quantity += 1;
       this.setCartToLocalStorage();
       this.changeQuantity(
@@ -84,8 +80,6 @@ export class CartService {
       return;
     }
 
-    // If the product is not in the cart, add it as a new item
-    console.log('Product not found in cart. Adding as new item...');
     this.cart.items.push(new cartItem(food));
     this.setCartToLocalStorage();
 
