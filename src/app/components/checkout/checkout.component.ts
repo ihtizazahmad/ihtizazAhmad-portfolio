@@ -67,6 +67,7 @@ export class CheckoutComponent implements OnInit {
   addtax: any;
   defaultTax: any[] = [];
   businessId = '674ba2d30e062b07414d6704';
+  serviceFee: any;
 
   initMap() {
     this.map?.locate({ setView: true, maxZoom: 15 });
@@ -146,6 +147,10 @@ export class CheckoutComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    let services = 3.54;
+    if(this.subtotal){
+      this.serviceFee = this.subtotal * services / 100;
+    }
     this.productService.getrestaurantById().subscribe((res: any) => {
       if (res) {
         this.businessData = res[0];
@@ -479,6 +484,7 @@ export class CheckoutComponent implements OnInit {
   }
 
   makePayment(formData: any, order: any, status: any) {
+    this.total = this.total + this.modifierPrice + this.addtax + this.serviceFee
     Swal.fire({
       title:
         'Orders are temporarily unavailable due to ongoing work in the background. Please try again later.',
@@ -643,7 +649,7 @@ export class CheckoutComponent implements OnInit {
                   customerId: existingCustomer?._id,
                   tax: this.order?.tax,
                   taxValue: this.order?.taxValue,
-                  subtotal: this?.total,
+                  subtotal: this?.subtotal,
                   selectedModifiers: this.modifires,
                   priceExclTax: this?.total,
                   PaymentStatus: status,
@@ -711,7 +717,7 @@ export class CheckoutComponent implements OnInit {
                         taxValue: this.order?.taxValue,
                         PaymentStatus: this.order?.PaymentStatus,
                         priceExclTax: this?.total,
-                        subtotal: this?.total,
+                        subtotal: this?.subtotal,
                         deliveryfee: this.deliveryFee,
                       };
 

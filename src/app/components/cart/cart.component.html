@@ -64,7 +64,7 @@
                                 <button 
                                     class="btn btn-outline-secondary" 
                                     type="button" 
-                                    (click)="increment(item, item.quantity + 1, i)" [disabled]="item.quantity >= 10 || item?.food?.totalQuantity">+</button>
+                                    (click)="increment(item, item.quantity + 1, i)" [disabled]="item.quantity >= 10 || item?.quantity == item?.food?.totalQuantity">+</button>
                             </div>
                             
                         </div>
