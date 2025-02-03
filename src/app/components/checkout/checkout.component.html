@@ -147,15 +147,15 @@
               </td>
               <td>{{ checkoutData?.price || 0 | currency }}</td>
             </tr>
-            <tr>
-              <th>Modifier Price</th>
+            <tr *ngIf="modifierPrice">
+              <th >Modifier Price</th>
               <td>{{ modifierPrice || 0 | currency }}</td>
             </tr>
             <tr>
               <th>Subtotal</th>
               <td>{{ subtotal || 0 | currency }}</td>
             </tr>
-            
+
             <tr *ngIf="businessData?.delivery === 'true'">
               <th>Delivery Fee</th>
               <td>{{ FinaldistanceTax || 0 | currency }}</td>
@@ -165,12 +165,16 @@
               <td>{{ addtax || 0 | currency }}</td>
             </tr>
             <tr>
-              <th>Service Fee:</th>
-              <td>{{ AppFee || 0 | currency }}</td>
+              <th>Service Fee</th>
+              <td>{{ serviceFee || 0 | currency }}</td>
             </tr>
+            <!-- <tr>
+              <th>POS surcharges:</th>
+              <td>{{ AppFee || 0 | currency }}</td>
+            </tr> -->
             <tr>
               <th>Total</th>
-              <td>{{ (total + addtax  + modifierPrice) || 0 | currency }}</td>
+              <td>{{ total + addtax + modifierPrice + serviceFee || 0 | currency }}</td>
             </tr>
           </tbody>
         </table>
@@ -367,7 +371,7 @@
                       border-radius: 50%;
                       margin-top: 7px;
                     "
-                    src="../../../../assets/no-image.jpg"
+                    src="../../../../assets/logo.png"
                     alt="No available image"
                     class="w-100 border secimg"
                   />
@@ -395,23 +399,32 @@
             width: 100%;
           "
         >
-          <tr>
-            <th style="text-align: left; padding-left: 5px; color: #f6871f">
-              POS surcharges:
-            </th>
-            <td style="text-align: right; padding-right: 5px">
-              {{ AppFee }}
-            </td>
-          </tr>
-          <tr>
+          <tr *ngIf="modifierPrice">
             <th style="text-align: left; padding-left: 5px">Modifier Total</th>
             <td style="text-align: right; padding-right: 5px">
               {{ modifierPrice || 0 | currency }}
             </td>
           </tr>
+          <tr>
+            <th style="text-align: left; padding-left: 5px">Sub Total</th>
+            <td style="text-align: right; padding-right: 5px">
+              {{ subtotal || 0 | currency }}
+            </td>
+          </tr>
+          <!-- <tr>
+            <th style="text-align: left; padding-left: 5px; color: #f6871f">
+              POS surcharges:
+            </th>
+            <td style="text-align: right; padding-right: 5px">
+              {{ AppFee || 0 | currency }}
+            </td>
+          </tr> -->
+
           <tr *ngIf="businessData?.delivery === 'true'">
-            <th>Delivery Fee</th>
-            <td>{{ FinaldistanceTax || 0 | currency }}</td>
+            <th style="text-align: left; padding-left: 5px">Delivery Fee</th>
+            <td style="text-align: right; padding-right: 5px">
+              {{ FinaldistanceTax || 0 | currency }}
+            </td>
           </tr>
           <tr>
             <th style="text-align: left; padding-left: 5px; color: #f6871f">
@@ -554,7 +567,7 @@
                       border-radius: 50%;
                       margin-top: 7px;
                     "
-                    src="../../../../assets/no-image.jpg"
+                    src="../../../../assets/logo.png"
                     alt="No available image"
                     class="w-100 border secimg"
                   />
@@ -582,20 +595,27 @@
             width: 100%;
           "
         >
-          <tr>
-            <th style="text-align: left; padding-left: 5px; color: #f6871f">
-              POS surcharges:
-            </th>
-            <td style="text-align: right; padding-right: 5px">
-              {{ AppFee | currency }}
-            </td>
-          </tr>
-          <tr>
+          <tr *ngIf="modifierPrice">
             <th style="text-align: left; padding-left: 5px">Modifier Total</th>
             <td style="text-align: right; padding-right: 5px">
               {{ modifierPrice || 0 | currency }}
             </td>
           </tr>
+          <tr>
+            <th style="text-align: left; padding-left: 5px">Sub Total</th>
+            <td style="text-align: right; padding-right: 5px">
+              {{ subtotal || 0 | currency }}
+            </td>
+          </tr>
+          <!-- <tr>
+            <th style="text-align: left; padding-left: 5px; color: #f6871f">
+              POS surcharges:
+            </th>
+            <td style="text-align: right; padding-right: 5px">
+              {{ AppFee || 0 | currency }}
+            </td>
+          </tr> -->
+
           <tr *ngIf="businessData?.delivery === 'true'">
             <th style="text-align: left; padding-left: 5px">Delivery Fee</th>
             <td style="text-align: right; padding-right: 5px">
