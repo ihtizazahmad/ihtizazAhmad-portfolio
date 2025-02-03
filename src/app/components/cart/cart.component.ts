@@ -47,6 +47,9 @@ export class CartComponent implements OnInit {
   removeProduct(cartItem: cartItem, index: number) {
     this.cartService.removeFromCart(cartItem.food._id, index);
     this.calculateTotalModifierPrice();
+    if (this.cart?.items.length === 0) {
+      this.router.navigate(['/']); 
+    }
   }
   calculateTotalModifierPrice() {
     this.modifierPrice = 0;
@@ -81,6 +84,7 @@ export class CartComponent implements OnInit {
     const cartJson = JSON.stringify({
       items: this.cart.items,
       modifierPrice: this.modifierPrice,
+      totalCount: this.totalCount,
       totalPrice: this.totalPrice,
     });
     localStorage.setItem('Cart', cartJson);

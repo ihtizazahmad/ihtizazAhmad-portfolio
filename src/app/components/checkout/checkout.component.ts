@@ -1,4 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Location } from '@angular/common';
 import { FormGroup, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CartService } from 'src/app/services/cart.service';
@@ -118,11 +119,12 @@ export class CheckoutComponent implements OnInit {
     private router: Router,
     private orderService: OrdertypeService,
     private userService: UserService,
-    private taxService : TaxService
+    private taxService : TaxService,
+    private backToLocation : Location
   ) {
     this.cartService.getCartObservable().subscribe((cart) => {
       console.log('getting cart observable:', cart);
-      this.subtotal = cart.totalPrice;
+      this.subtotal = cart.totalPrice + cart.modifierPrice;
       this.modifierPrice = cart.modifierPrice;
       this.product = cart.items;
       this.checkoutData = cart;
@@ -520,11 +522,12 @@ export class CheckoutComponent implements OnInit {
     return randomNum;
   }
   goBack() {
-    // this.backToLocation.back();
+    this.backToLocation.back();
   }
 
   makePayment(formData: any, order: any, status: any) {
     console.log('fromData :', formData);
+    console.log('order :', order);
     Swal.fire({
       title: 'Orders are temporarily unavailable due to ongoing work in the background. Please try again later.',
       icon: 'warning',
@@ -708,8 +711,8 @@ export class CheckoutComponent implements OnInit {
                     console.log('email send in if block');
                     console.log('this is mail no 2 user', formData.value.email);
 
-                    // this.sendEmail2(formData.value?.Email);
-                    // this.sendEmail();
+                    this.sendEmail2(formData.value?.Email);
+                    this.sendEmail();
                     this.isLoading = false;
 
                     Swal.fire({
@@ -775,8 +778,8 @@ export class CheckoutComponent implements OnInit {
 
                       this.orderService.createOrder(order).subscribe((res) => {
                         if (res) {
-                          // this.sendEmail2(formData.value?.Email);
-                          // this.sendEmail();
+                          this.sendEmail2(formData.value?.Email);
+                          this.sendEmail();
                           this.isLoading = false;
 
                           Swal.fire({
