@@ -103,7 +103,7 @@ export class SecurityService {
       return result2;
     }, {});
 
-    // console.log(result);
+    // ""(result);
 
     let token = '';
     let idToken = '';
@@ -111,24 +111,24 @@ export class SecurityService {
 
     if (!result.error) {
       if (result.state !== this.storageService.retrieve('authStateControl')) {
-        // console.log('AuthorizedCallback incorrect state');
+        // ""('AuthorizedCallback incorrect state');
       } else {
         token = result.access_token;
         idToken = result.id_token;
 
         const dataIdToken: any = this.getDataFromToken(idToken);
-        // console.log(dataIdToken);
+        // ""(dataIdToken);
 
         // validate nonce
         if (dataIdToken.nonce !== this.storageService.retrieve('authNonce')) {
-          // console.log('AuthorizedCallback incorrect nonce');
+          // ""('AuthorizedCallback incorrect nonce');
         } else {
           this.storageService.store('authNonce', '');
           this.storageService.store('authStateControl', '');
           const lastpath = this.storageService.retrieve('path', true);
           this.router.navigate([lastpath]);
           authResponseIsValid = true;
-          // console.log('AuthorizedCallback state and nonce validated, returning access token');
+          // ""('AuthorizedCallback state and nonce validated, returning access token');
         }
       }
     }
@@ -162,7 +162,7 @@ export class SecurityService {
   }
 
   public HandleError(error: any) {
-    // console.log(error);
+    // ""(error);
     if (error.status === 403) {
       this.router.navigate(['/Forbidden']);
     } else if (error.status === 401) {

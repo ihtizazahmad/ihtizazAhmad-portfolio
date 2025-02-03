@@ -32,7 +32,6 @@ export class CartComponent implements OnInit {
   ngOnInit(): void {
     this.cartService.getCartObservable().subscribe((cart) => {
       this.cart = cart;
-      console.log('cart items :', this.cart);
       this.totalCount = this.cart?.totalCount;
       this.totalPrice = this.cart?.totalPrice;
       this.subtotal = this.cart?.totalPrice;
