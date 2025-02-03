@@ -12,8 +12,11 @@ export class HeaderComponent {
   cartQuantity: number = 0;
   constructor(private cartService: CartService, private router: Router) {
     this.cartService.getCartObservable().subscribe((newCart) => {
+      console.log("first", newCart)
       if (newCart.items.length > 0) {
         this.cartQuantity = newCart.totalCount;
+      }else {
+        this.cartQuantity = 0;
       }
     });
   }

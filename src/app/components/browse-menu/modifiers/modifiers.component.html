@@ -1,62 +1,114 @@
 <mat-dialog-content class="p-0">
   <div class="customize-pizza-dialog">
     <div class="header-image">
-      <img [src]="this.data?.product?.Product_pic" alt="Pizza" class="img-fluid" />
+      <img
+        [src]="this.data?.product?.Product_pic"
+        alt="Pizza"
+        class="img-fluid"
+      />
       <button mat-icon-button class="close-btn" mat-dialog-close>
         <mat-icon>close</mat-icon>
       </button>
     </div>
     <div class="p-4">
       <div class="d-flex justify-content-between">
-        <span class=" text-dark ">Customise your Burger</span>
+        <span class="text-dark">Customize your {{ data?.product?.name }}</span>
       </div>
       <div class="text-center my-3">
         <h5 class="text-orange fw-bold">Please select your Modifiers!</h5>
       </div>
       <div class="topping-section mb-4" *ngFor="let modifiers of data?.modifiers">
         <div class="section-header" *ngFor="let category of modifiers.categories">
-          <span class="icon">
-            <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg"
-              xmlns:xlink="http://www.w3.org/1999/xlink">
-              <rect width="45" height="45" fill="url(#pattern0_17_1771)" />
-              <defs>
-                <pattern id="pattern0_17_1771" patternContentUnits="objectBoundingBox" width="1" height="1">
-                  <use xlink:href="#image0_17_1771" transform="scale(0.0111111)" />
-                </pattern>
-                <image id="image0_17_1771" width="90" height="90"
-                  xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFoAAABaCAYAAAA4qEECAAAACXBIWXMAAAsTAAALEwEAmpwYAAAFgElEQVR4nO2dXWgcVRTHT86dnXtmk7RCTWOS3XO2aWo1ICJVpIj4gYr4IPimL4pUBEERFU2pH2jxSUFqrVSLKGIVhCJ9UPALlfogog+itkVLQcUUPzDGthba0ERudrWJmZlNNjNzZ+fuDw6UMJ299793zj3n3Dt3AXJNJVAkzynNfyriSfNv8zfbrSocimSbIpmZZ5qfsd2uwqE0/xIi9K+225WzR5531h/3WXseuodXL/UuC0RuWCstUoHchCRfK5Ip1PKFF9QuhXZHEb+wcCTKBJLckr3QA2Wl5dWF9+FJ6Bnpg3ZGkRyPEkmRbAMALxOhu9f0o5Yvo+6DWm6HNqZLER+NEXpGaXnT6Jiq0EF1UJEcimsHUu02aGcUybOxQtPso/tKakL3DJytSPY3+bJ/h97BVdDejOhGaHY6dkRpvjMFoRFJPmzyJX9XKlUugKKgtFxpwjEV3ekT4A+tS1JoJH4s3l3wXoD+bigctLbaCKsiHmF+PTGhfTnfhG8xQu9YzNzQvnQPr46ZmE6Dz6NJCI0kb8eI/KKZqKHolEq1CxXxyYiJ6emw/1OvcSy4diLsWo/4sui5QD5dbEhZCBTJ9ojJ6WDE9TtCrt8efi2/HCH0ceO+wCn8oXURYkwDyFkRqbzJMv+uG+8Mr9719SiSYxGT36PgIor4YKjfjU+Hu+L8K1L11sioJvQLdAAkeTjEh+5b5j0/iPD9u8FhvLqvrk+MSPwRBJWhlu8WVIYiEyNfbki05e2JEMD63uXeBUm2RIzmPwA2lJJpq/P09ZiaRYR/3uW8PEmhtDwVFTuXynJRYh9UIDyTcCDJ/SacM37bFH6U5t/+l1IfU1qOIPFXSPxuVLqNxO/Y7lCOGPWR5GbUsic0A1yOabnKdu/ygDLlUaVlPFFx5wnNP6DmO8xcCU5Cw2zqDqkJHBafB9VBcAp/zblKy89ZiTzHjYyDroyAG4ysUCSHMxf5jB0GGF4JRUeR7LIo8tx6dIGhtdXIOnS2NlXocimSbM6ByLNm0nUoKkjyfn6E5vegqCjNP9oW+D/T/BMUFVN8V7YFPmMnoKjkZCKcqRufgqJi6sIqP0JPQlExdQdlXeCGaTkCRQVJvkl5lJ5E4gehzAPgMkj8cZpCI/FDtvuYC8J320ti5vxIniP01lSFdq4MGgFq3pSy6xiz3cdcoDRfk8FkONYZ2XMp84CZvGwlMUA1AZdA4rHsheajTuyPnkdZzslaaNT8GThHMLtfLmvX8RK4BlpYDMBA7gNnCKqDdf9sYTLU1Wuh8PQOrjK7+i24i39tugAvby4ORfy9RaEPgSsoLa9ZEzrmXcbCgZrvtiU0+tV7wRW8oHqxLaE9ko3gDhtKjdfYLKwTOnbgFWa4k7RebJIthd6d1MqrECppv+zyyovScn1WQpt6CrhLf3dWWaEzCUoUqPmTbFyHbAaXQeJHMnIfU8qv3giu4pFszMpPe1S9HBzGaxzomrLQ/Jfzrygj8d7UfbSWPbZHlBOLtqh5k+1uubBoO72soykKTzmZRVvU/LntrjixaIuux9BZLdqCX1vf9MOcJEhu0RZJvrXdndyhtDyeeGinZavtfuUPLbWkV8fBl/NsdyuXoJZ9SYnciTYy2j9tFoDjPstxRlYks5bIp8xJ6LZ7k2uUlt0JjOa3bPcj9yhdu2750QZfbbsf7QA2+4WJJrbfvU3mLYKa72ndbchdttvfbsdfTizdZZgT0vt6bLe+rVBanljyaC7yqTLpMbxySachmB+tSeDEXifBJRT/zVmmttvbxoz6ivjAIhKUA/UzqDu0jEe1K5oUm6a8oHJJR+K0X9bX/GRH5OToCk3NNb/h7im66dGFJA/M/vaslvHGVtyOyB06dABH+AdCGJjSuLjOFwAAAABJRU5ErkJggg==" />
-              </defs>
-            </svg>
-          </span>
-          <h6>{{category?.name}}</h6>
-        </div>
-        <div class="row" *ngFor="let category of modifiers.categories">
-          <div class="col-lg-4 col-md-6" *ngFor="let subcategory of category.subcategories">
-            <mat-checkbox color="primary" [(ngModel)]="subcategory.selected" > {{ subcategory.name }} - {{ subcategory.price | currency }}</mat-checkbox>
+          <div class="d-flex align-items-center mb-2">
+            <span class="icon">
+              <svg
+                width="45"
+                height="45"
+                viewBox="0 0 45 45"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+              >
+                <rect width="45" height="45" fill="url(#pattern0_17_1771)" />
+                <defs>
+                  <pattern
+                    id="pattern0_17_1771"
+                    patternContentUnits="objectBoundingBox"
+                    width="1"
+                    height="1"
+                  >
+                    <use
+                      xlink:href="#image0_17_1771"
+                      transform="scale(0.0111111)"
+                    />
+                  </pattern>
+                  <image
+                    id="image0_17_1771"
+                    width="90"
+                    height="90"
+                    xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFoAAABaCAYAAAA4qEECAAAACXBIWXMAAAsTAAALEwEAmpwYAAAFgElEQVR4nO2dXWgcVRTHT86dnXtmk7RCTWOS3XO2aWo1ICJVpIj4gYr4IPimL4pUBEERFU2pH2jxSUFqrVSLKGIVhCJ9UPALlfogog+itkVLQcUUPzDGthba0ERudrWJmZlNNjNzZ+fuDw6UMJ299793zj3n3Dt3AXJNJVAkzynNfyriSfNv8zfbrSocimSbIpmZZ5qfsd2uwqE0/xIi9K+225WzR5531h/3WXseuodXL/UuC0RuWCstUoHchCRfK5Ip1PKFF9QuhXZHEb+wcCTKBJLckr3QA2Wl5dWF9+FJ6Bnpg3ZGkRyPEkmRbAMALxOhu9f0o5Yvo+6DWm6HNqZLER+NEXpGaXnT6Jiq0EF1UJEcimsHUu02aGcUybOxQtPso/tKakL3DJytSPY3+bJ/h97BVdDejOhGaHY6dkRpvjMFoRFJPmzyJX9XKlUugKKgtFxpwjEV3ekT4A+tS1JoJH4s3l3wXoD+bigctLbaCKsiHmF+PTGhfTnfhG8xQu9YzNzQvnQPr46ZmE6Dz6NJCI0kb8eI/KKZqKHolEq1CxXxyYiJ6emw/1OvcSy4diLsWo/4sui5QD5dbEhZCBTJ9ojJ6WDE9TtCrt8efi2/HCH0ceO+wCn8oXURYkwDyFkRqbzJMv+uG+8Mr9719SiSYxGT36PgIor4YKjfjU+Hu+L8K1L11sioJvQLdAAkeTjEh+5b5j0/iPD9u8FhvLqvrk+MSPwRBJWhlu8WVIYiEyNfbki05e2JEMD63uXeBUm2RIzmPwA2lJJpq/P09ZiaRYR/3uW8PEmhtDwVFTuXynJRYh9UIDyTcCDJ/SacM37bFH6U5t/+l1IfU1qOIPFXSPxuVLqNxO/Y7lCOGPWR5GbUsic0A1yOabnKdu/ygDLlUaVlPFFx5wnNP6DmO8xcCU5Cw2zqDqkJHBafB9VBcAp/zblKy89ZiTzHjYyDroyAG4ysUCSHMxf5jB0GGF4JRUeR7LIo8tx6dIGhtdXIOnS2NlXocimSbM6ByLNm0nUoKkjyfn6E5vegqCjNP9oW+D/T/BMUFVN8V7YFPmMnoKjkZCKcqRufgqJi6sIqP0JPQlExdQdlXeCGaTkCRQVJvkl5lJ5E4gehzAPgMkj8cZpCI/FDtvuYC8J320ti5vxIniP01lSFdq4MGgFq3pSy6xiz3cdcoDRfk8FkONYZ2XMp84CZvGwlMUA1AZdA4rHsheajTuyPnkdZzslaaNT8GThHMLtfLmvX8RK4BlpYDMBA7gNnCKqDdf9sYTLU1Wuh8PQOrjK7+i24i39tugAvby4ORfy9RaEPgSsoLa9ZEzrmXcbCgZrvtiU0+tV7wRW8oHqxLaE9ko3gDhtKjdfYLKwTOnbgFWa4k7RebJIthd6d1MqrECppv+zyyovScn1WQpt6CrhLf3dWWaEzCUoUqPmTbFyHbAaXQeJHMnIfU8qv3giu4pFszMpPe1S9HBzGaxzomrLQ/Jfzrygj8d7UfbSWPbZHlBOLtqh5k+1uubBoO72soykKTzmZRVvU/LntrjixaIuux9BZLdqCX1vf9MOcJEhu0RZJvrXdndyhtDyeeGinZavtfuUPLbWkV8fBl/NsdyuXoJZ9SYnciTYy2j9tFoDjPstxRlYks5bIp8xJ6LZ7k2uUlt0JjOa3bPcj9yhdu2750QZfbbsf7QA2+4WJJrbfvU3mLYKa72ndbchdttvfbsdfTizdZZgT0vt6bLe+rVBanljyaC7yqTLpMbxySachmB+tSeDEXifBJRT/zVmmttvbxoz6ivjAIhKUA/UzqDu0jEe1K5oUm6a8oHJJR+K0X9bX/GRH5OToCk3NNb/h7im66dGFJA/M/vaslvHGVtyOyB06dABH+AdCGJjSuLjOFwAAAABJRU5ErkJggg=="
+                  />
+                </defs>
+              </svg>
+            </span>
+            <h6>{{ category?.name }}</h6>
+          </div>
+          <div class="row">
+            <div class="col-lg-4 col-md-6" *ngFor="let subcategory of category.subcategories">
+              <mat-checkbox color="primary" [(ngModel)]="subcategory.selected">
+                {{ subcategory.name }} - {{ subcategory.price | currency }}
+              </mat-checkbox>
+            </div>
           </div>
         </div>
       </div>
+      
       <div class="row">
-      <div class="text-center my-3">
+        <div class="text-center my-3">
           <h5 class="text-orange fw-bold">Add your special request</h5>
-      </div>
-      <div class="topping-section mb-4">
-          <textarea name="" class="form-control" id="" rows="3" [(ngModel)]="notes" placeholder="Write your special instructions here..."></textarea>
-      </div>
+        </div>
+        <div class="topping-section mb-4">
+          <textarea
+            name=""
+            class="form-control"
+            id=""
+            rows="3"
+            [(ngModel)]="notes"
+            placeholder="Write your special instructions here..."
+          ></textarea>
+        </div>
       </div>
       <div class="footer d-flex justify-content-end align-items-center">
         <div class="buttons d-flex gap-3">
           <button class="btn take-btn me-2" (click)="close()">Skip</button>
           <button class="btn btn-success" (click)="apply()">
-            <svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg"
-              xmlns:xlink="http://www.w3.org/1999/xlink">
+            <svg
+              width="35"
+              height="35"
+              viewBox="0 0 35 35"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+            >
               <rect width="35" height="35" fill="url(#pattern0_17_1703)" />
               <defs>
-                <pattern id="pattern0_17_1703" patternContentUnits="objectBoundingBox" width="1" height="1">
-                  <use xlink:href="#image0_17_1703" transform="scale(0.0111111)" />
+                <pattern
+                  id="pattern0_17_1703"
+                  patternContentUnits="objectBoundingBox"
+                  width="1"
+                  height="1"
+                >
+                  <use
+                    xlink:href="#image0_17_1703"
+                    transform="scale(0.0111111)"
+                  />
                 </pattern>
-                <image id="image0_17_1703" width="90" height="90"
-                  xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFoAAABaCAYAAAA4qEECAAAACXBIWXMAAAsTAAALEwEAmpwYAAAD50lEQVR4nO2dSWsVQRDHG4xGUfRoYgSV6BeIelIxiAseRD2oYBSM2yWBGEN88ebN5RQCfg3XQ0Q/gCKRmOTiRb0Yt6yefA8Sf1KkxRyyaXp6ambqB3N5zJtX/adfd1d1dY1zhmEYhmEYhmEYxtIAVgC7gUvAPeARMAi8B8aBir/G/WeD/p67/ju75BlL/LliAWwGrgFPgR8sn0ngCdAG1LkiA6wBzgMvgGmSYwp4DpwDVruiAKzzPW2Y+HwHbgEbXF4BVgKdwBjpIzZ0iE0uTwD7gCH08Q446LKOjInAfeAXehHbeoBql0WArcArssMbYLvLEvJ3DLRMi40sCw+4LACcBH6SXSrAGacZ4GrCa+JYSBuuOI0AJ7xzkBemgdNOEzKuAWXyRwU47DQA7MjoxPcvE2R92iJX+2VR3ulLdZ3tnZGi0JOmW63Z4wuNtHV/bJGrgAGKx1DUQJSPwhWV9pjx5FGKy6hoEEPoUtotVUBHjO2nr0ociRJQ469SZIfpc6LbYn6PTwOlOWw7GlnspiSFlo1UDdTMY9+RiJHD3qRErlMUNKpZwM5YYk8nksrg8y600LWIrbGGkdYkhJbkFi2URUwFYj9MIk1rAl1UgGOL2J30MDIRNP3M58JppKygZ+8MKfRl9FJJuWc3hxRasjo1U0lR7NshhX6Mfiopif0gpNBZCYmWUxiz+0MK/TFgr+sEaoMZ93/tCSn2h5CGhQqL3nBKEKcnUJtGQholPTEEtU4JwMZAbSprFHqTU4LYolHo0aTCm2kB3NQ4dIScDEtp92zNk6Et7yIt78xhieSwmAseyQWXE6laqaQcVLoQUmgLk85PQ0ihLfAfI/DvxZaz1VooKwj4h50IZxkux4q1UFIgstCSlMtq6QZ/mVoo7WG5YkuVAA3U5DaBxjdESjGozOsgfkrY2aSTHL+gY+3cJWFXf3VFFnk48dofBU9C/8P1REX2Qq+V0CDFZTRKIroXW4qKFJW2KCLPOiz0luIxFL1qDbDXjr9FwlduKQrdsXSd74iyHN/NO6+BVakJ7cWu9wfT88oEsM1pAGjMeNWZhRyjQ04TwHFFQadQZ1ROOY1IeZyclPqZkpxwpxlf8ifLw0hZXYmfRUr/TGZ04mt0WQLYArwkO/SlXtJnmevsHuUepNjWnfo6OaC7PoA+xKY9Lk8wE4hqVxJiHfGbzVUurzATz5ZGfkpB4G++UPd6VxSYKXncBDxL2NGRZ/fKHl+hSs/Phd/3a5Wz1f5tFMtl3D+rJbGUgKzDTPpZA3ARuCPZQJKD7F8FMjbr9SBj/rN+f4/c2+y/a68HMQzDMAzDMAzDcEvkN6dJSbMs1VD2AAAAAElFTkSuQmCC" />
+                <image
+                  id="image0_17_1703"
+                  width="90"
+                  height="90"
+                  xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFoAAABaCAYAAAA4qEECAAAACXBIWXMAAAsTAAALEwEAmpwYAAAD50lEQVR4nO2dSWsVQRDHG4xGUfRoYgSV6BeIelIxiAseRD2oYBSM2yWBGEN88ebN5RQCfg3XQ0Q/gCKRmOTiRb0Yt6yefA8Sf1KkxRyyaXp6ambqB3N5zJtX/adfd1d1dY1zhmEYhmEYhmEYxtIAVgC7gUvAPeARMAi8B8aBir/G/WeD/p67/ju75BlL/LliAWwGrgFPgR8sn0ngCdAG1LkiA6wBzgMvgGmSYwp4DpwDVruiAKzzPW2Y+HwHbgEbXF4BVgKdwBjpIzZ0iE0uTwD7gCH08Q446LKOjInAfeAXehHbeoBql0WArcArssMbYLvLEvJ3DLRMi40sCw+4LACcBH6SXSrAGacZ4GrCa+JYSBuuOI0AJ7xzkBemgdNOEzKuAWXyRwU47DQA7MjoxPcvE2R92iJX+2VR3ulLdZ3tnZGi0JOmW63Z4wuNtHV/bJGrgAGKx1DUQJSPwhWV9pjx5FGKy6hoEEPoUtotVUBHjO2nr0ociRJQ469SZIfpc6LbYn6PTwOlOWw7GlnspiSFlo1UDdTMY9+RiJHD3qRErlMUNKpZwM5YYk8nksrg8y600LWIrbGGkdYkhJbkFi2URUwFYj9MIk1rAl1UgGOL2J30MDIRNP3M58JppKygZ+8MKfRl9FJJuWc3hxRasjo1U0lR7NshhX6Mfiopif0gpNBZCYmWUxiz+0MK/TFgr+sEaoMZ93/tCSn2h5CGhQqL3nBKEKcnUJtGQholPTEEtU4JwMZAbSprFHqTU4LYolHo0aTCm2kB3NQ4dIScDEtp92zNk6Et7yIt78xhieSwmAseyQWXE6laqaQcVLoQUmgLk85PQ0ihLfAfI/DvxZaz1VooKwj4h50IZxkux4q1UFIgstCSlMtq6QZ/mVoo7WG5YkuVAA3U5DaBxjdESjGozOsgfkrY2aSTHL+gY+3cJWFXf3VFFnk48dofBU9C/8P1REX2Qq+V0CDFZTRKIroXW4qKFJW2KCLPOiz0luIxFL1qDbDXjr9FwlduKQrdsXSd74iyHN/NO6+BVakJ7cWu9wfT88oEsM1pAGjMeNWZhRyjQ04TwHFFQadQZ1ROOY1IeZyclPqZkpxwpxlf8ifLw0hZXYmfRUr/TGZ04mt0WQLYArwkO/SlXtJnmevsHuUepNjWnfo6OaC7PoA+xKY9Lk8wE4hqVxJiHfGbzVUurzATz5ZGfkpB4G++UPd6VxSYKXncBDxL2NGRZ/fKHl+hSs/Phd/3a5Wz1f5tFMtl3D+rJbGUgKzDTPpZA3ARuCPZQJKD7F8FMjbr9SBj/rN+f4/c2+y/a68HMQzDMAzDMAzDcEvkN6dJSbMs1VD2AAAAAElFTkSuQmCC"
+                />
               </defs>
             </svg>
             Add

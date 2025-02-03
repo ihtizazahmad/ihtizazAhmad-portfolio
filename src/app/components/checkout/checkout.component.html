@@ -148,13 +148,14 @@
               <td>{{ checkoutData?.price || 0 | currency }}</td>
             </tr>
             <tr>
+              <th>Modifier Price</th>
+              <td>{{ modifierPrice || 0 | currency }}</td>
+            </tr>
+            <tr>
               <th>Subtotal</th>
               <td>{{ subtotal || 0 | currency }}</td>
             </tr>
-            <tr>
-              <th>Modifier Total</th>
-              <td>{{ modifierPrice || 0 | currency }}</td>
-            </tr>
+            
             <tr *ngIf="businessData?.delivery === 'true'">
               <th>Delivery Fee</th>
               <td>{{ FinaldistanceTax || 0 | currency }}</td>
