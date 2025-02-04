@@ -150,6 +150,7 @@ export class CheckoutComponent implements OnInit {
     let services = 3.54;
     if(this.subtotal){
       this.serviceFee = this.subtotal * services / 100;
+      
     }
     this.productService.getrestaurantById().subscribe((res: any) => {
       if (res) {
@@ -161,26 +162,37 @@ export class CheckoutComponent implements OnInit {
       }
     });
     this.userData = this.product[0]?.food?.userId;
+    console.log("getting user Data :", this.userData)
     // this.userEmail = this.userData?.email;
     this.userId = this.userData?._id;
     this.AppFee = this.userData?.appFee;
-    if (this.userData) {
-      this.total = this.subtotal + this.AppFee;
-    }
+    // if (this.userData) {
+    //   this.total = this.subtotal + this.AppFee;
+    // }
 
     this.getTax();
   }
 
   getTax() {
     this.taxService.getTax().subscribe((res: any) => {
+      console.log("get tax :", res)
+
       const applicableTaxes = res.filter(
         (item: any) => item?.userId === this.businessId
       );
+      console.log("gettt taxes :", applicableTaxes)
+
       let totalTaxPercentage = applicableTaxes.reduce(
         (sum: number, tax: any) => sum + Number(tax.taxValue),
         0
       );
+      console.log("gettt total tax :", totalTaxPercentage)
+
       this.addtax = (this.subtotal * totalTaxPercentage) / 100;
+      console.log("gettt tax :", this.addtax)
+      if(this.addtax){
+        this.total = this.subtotal + this.addtax + this.serviceFee;
+      }
       this.defaultTax = [];
       applicableTaxes.forEach((tax: any) => {
         const taxValue = Number(tax.taxValue);
@@ -198,7 +210,6 @@ export class CheckoutComponent implements OnInit {
       new Promise<void>((resolve) => {
         this.location = this.businessData?.Line1;
         this.ChargesPerKm = this.businessData?.ChargesperKm.toFixed(2);
-
         this.freeDelivery = this.businessData?.ChargesFreeKm;
 
         resolve();
@@ -484,16 +495,17 @@ export class CheckoutComponent implements OnInit {
   }
 
   makePayment(formData: any, order: any, status: any) {
-    this.total = this.total + this.modifierPrice + this.addtax + this.serviceFee
-    Swal.fire({
-      title:
-        'Orders are temporarily unavailable due to ongoing work in the background. Please try again later.',
-      icon: 'warning',
-      confirmButtonText: 'OK',
-    }).then(() => {
-      this.router.navigate(['/']);
-    });
-    return;
+    // this.total = this.total + this.addtax + this.serviceFee;
+    // console.log("first", this.total)
+    // Swal.fire({
+    //   title:
+    //     'Orders are temporarily unavailable due to ongoing work in the background. Please try again later.',
+    //   icon: 'warning',
+    //   confirmButtonText: 'OK',
+    // }).then(() => {
+    //   this.router.navigate(['/']);
+    // });
+    // return;
     if (
       !formData ||
       !formData.value ||
@@ -509,7 +521,7 @@ export class CheckoutComponent implements OnInit {
       return;
     }
     order.paymentStatus = status;
-    this.stripeAccessToken = this.userData?.stripeAcessToken;
+    this.stripeAccessToken = this.userData?.stripe_acess_token;
     const amountInDollars = this.total;
     const amountInCents = Math.round(amountInDollars * 100);
     const feeAmountInDollars = this.AppFee || 30;

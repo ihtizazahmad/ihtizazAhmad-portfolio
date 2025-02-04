@@ -148,7 +148,7 @@
               <td>{{ checkoutData?.price || 0 | currency }}</td>
             </tr>
             <tr *ngIf="modifierPrice">
-              <th >Modifier Price</th>
+              <th>Modifier Price</th>
               <td>{{ modifierPrice || 0 | currency }}</td>
             </tr>
             <tr>
@@ -174,7 +174,7 @@
             </tr> -->
             <tr>
               <th>Total</th>
-              <td>{{ total + addtax + modifierPrice + serviceFee || 0 | currency }}</td>
+              <td>{{ total || 0 | currency }}</td>
             </tr>
           </tbody>
         </table>
@@ -384,7 +384,7 @@
                 {{ checkoutData?.quantity }}
               </td>
               <td style="text-align: right; padding-right: 5px">
-                {{ checkoutData?.food?.price | currency }}
+                {{ checkoutData?.price | currency }}
               </td>
             </tr>
           </ng-container>
@@ -411,14 +411,20 @@
               {{ subtotal || 0 | currency }}
             </td>
           </tr>
-          <!-- <tr>
-            <th style="text-align: left; padding-left: 5px; color: #f6871f">
-              POS surcharges:
+          <tr *ngIf="addtax">
+            <th style="text-align: left; padding-left: 5px">Tax:</th>
+            <td style="text-align: right; padding-right: 5px">
+              {{ addtax || 0 | currency }}
+            </td>
+          </tr>
+          <tr>
+            <th style="text-align: left; padding-left: 5px; ">
+              Service Fee:
             </th>
             <td style="text-align: right; padding-right: 5px">
-              {{ AppFee || 0 | currency }}
+              {{ serviceFee || 0 | currency }}
             </td>
-          </tr> -->
+          </tr>
 
           <tr *ngIf="businessData?.delivery === 'true'">
             <th style="text-align: left; padding-left: 5px">Delivery Fee</th>
@@ -580,7 +586,7 @@
                 {{ checkoutData?.quantity }}
               </td>
               <td style="text-align: right; padding-right: 5px">
-                {{ checkoutData?.food?.price | currency }}
+                {{ checkoutData?.price | currency }}
               </td>
             </tr>
           </ng-container>
@@ -607,14 +613,18 @@
               {{ subtotal || 0 | currency }}
             </td>
           </tr>
-          <!-- <tr>
-            <th style="text-align: left; padding-left: 5px; color: #f6871f">
-              POS surcharges:
-            </th>
+          <tr *ngIf="addtax">
+            <th style="text-align: left; padding-left: 5px">Tax:</th>
             <td style="text-align: right; padding-right: 5px">
-              {{ AppFee || 0 | currency }}
+              {{ addtax || 0 | currency }}
             </td>
-          </tr> -->
+          </tr>
+          <tr>
+            <th style="text-align: left; padding-left: 5px">Service Fee:</th>
+            <td style="text-align: right; padding-right: 5px">
+              {{ serviceFee || 0 | currency }}
+            </td>
+          </tr>
 
           <tr *ngIf="businessData?.delivery === 'true'">
             <th style="text-align: left; padding-left: 5px">Delivery Fee</th>
@@ -623,7 +633,7 @@
             </td>
           </tr>
           <tr>
-            <th style="text-align: left; padding-left: 5px">Total:</th>
+            <th style="text-align: left; padding-left: 5px; color: #f6871f">Total:</th>
             <td style="text-align: right; padding-right: 5px">
               {{ total | currency }}
             </td>
