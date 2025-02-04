@@ -16,6 +16,8 @@ import { CartService } from 'src/app/services/cart.service';
 export class ProductsComponent implements OnInit {
   loader: boolean = true;
   businessId = '674ba2d30e062b07414d6704';
+   //  for test mode-->
+  //  businessId = '65d6e2acf4cb2c368afded71';
   category_id: any;
   filteredProducts: any[] = []; 
   products: any[] = [];
