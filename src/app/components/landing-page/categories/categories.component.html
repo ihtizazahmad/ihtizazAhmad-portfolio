@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-lg-3 col-md-6 mb-3" *ngFor="let category of allCategories" (click)="loadProdcutByCategory(category.name)">
             <div class="card">
-                <img [src]="category.img ?? '../../../../assets/no-photo.png'" alt="">
+                <img [src]="category.img ?? '../../../../assets/logo.png'" alt="">
                 <div class="p-3">
                     <h2 class="mb-1">{{category.name}}</h2>
                     <p *ngIf="category.totalitems" class="mb-0">{{category.totalitems}} Total Items</p>

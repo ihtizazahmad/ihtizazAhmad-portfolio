@@ -10,9 +10,9 @@ import Swal from 'sweetalert2';
 })
 export class ContactUsComponent implements OnInit {
   contactForm: FormGroup;
-  // userId = '674ba2d30e062b07414d6704';
+  userId = '674ba2d30e062b07414d6704';
   //  for test mode-->
-   userId = '65d6e2acf4cb2c368afded71'; 
+  // userId = '65d6e2acf4cb2c368afded71';
   userEmail: any;
   businessName: any;
 
@@ -27,14 +27,13 @@ export class ContactUsComponent implements OnInit {
     this.userService.getUserById(this.userId).subscribe({
       next: (res) => {
         if (res && res.length > 0) {
-          console.log('getting user data:', res);
           const userData = res[0];
           this.userEmail = userData?.email;
           this.businessName = userData?.businessName;
         }
       },
       error(err) {
-        console.log('Getting error while getting user data:', err);
+        console.error('Getting error while getting user data:', err);
       },
     });
   }

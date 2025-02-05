@@ -1,4 +1,5 @@
 <div class="container-fluid my-5">
+    <span routerLink="/browse-menu/products" class="back">  <mat-icon>arrow_back</mat-icon> Our Menu</span>
     <h2 class=" text-white d-flex justify-content-start align-items-center gap-5 mb-4 p-3">
         <svg width="43" height="43" viewBox="0 0 43 43" fill="none" xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -24,7 +25,7 @@
                         </div>
     
                         <div class="col-md-6 p-3">
-                            <div class="d-flex gap-3 ">
+                            <div class="d-flex gap-3">
                                 <div class="qty d-flex justify-content-center align-items-center">
                                    {{item.quantity}}x
                                 </div>
@@ -36,11 +37,11 @@
                                     <p class="fw-bold mb-0 price">{{item?.price | currency}}</p>
                                 </div>
                             </div>
-                            <div class="row" *ngIf="item.food.modifiers?.length > 0">
-                                    <div class="text-muted d-flex" *ngFor="let modifier of item.food.modifiers">
+                            <div class="row mt-3" *ngIf="item.food.modifiers?.length > 0">
+                                    <div class="text-muted d-flex" >
                                         <strong>Modifiers:</strong>&nbsp; 
-                                        <div class="d-flex" *ngFor="let subModifier of modifier.subcategories">
-                                            <div>({{subModifier.name}} &nbsp;USD {{subModifier.price}})</div>
+                                        <div class="d-flex" *ngFor="let modifier of item.food.modifiers">
+                                            <div class="me-2" *ngFor="let subModifier of modifier.subcategories">({{ subModifier.name }} &nbsp;{{ subModifier.price | currency }})</div>
                                         </div>
                                     
                                   </div>
@@ -63,7 +64,7 @@
                                 <button 
                                     class="btn btn-outline-secondary" 
                                     type="button" 
-                                    (click)="increment(item, item.quantity + 1, i)" [disabled]="item.quantity >= 10">+</button>
+                                    (click)="increment(item, item.quantity + 1, i)" [disabled]="item.quantity >= 10 || item?.quantity == item?.food?.totalQuantity">+</button>
                             </div>
                             
                         </div>

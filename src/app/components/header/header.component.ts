@@ -14,6 +14,8 @@ export class HeaderComponent {
     this.cartService.getCartObservable().subscribe((newCart) => {
       if (newCart.items.length > 0) {
         this.cartQuantity = newCart.totalCount;
+      } else {
+        this.cartQuantity = 0;
       }
     });
   }

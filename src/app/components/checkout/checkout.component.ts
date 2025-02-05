@@ -1,4 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Location } from '@angular/common';
 import { FormGroup, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CartService } from 'src/app/services/cart.service';
@@ -36,7 +37,7 @@ export class CheckoutComponent implements OnInit {
   customerName: any;
   customerPhone: any;
   isLoading: boolean = false;
-  userEmail: any;
+  userEmail: any = 'wrapsupfood@gmail.com';
   stripeAccessToken: any;
   paymentIntentId: any;
   client_secret: any;
@@ -66,9 +67,10 @@ export class CheckoutComponent implements OnInit {
   addtax: any;
   defaultTax: any[] = [];
   businessId = '674ba2d30e062b07414d6704';
+  serviceFee: any;
 
   initMap() {
-    this.map.locate({ setView: true, maxZoom: 15 });
+    this.map?.locate({ setView: true, maxZoom: 15 });
     if (this.businessData?.delivery === 'true') {
       if (
         this.defaultOfficelocation &&
@@ -77,9 +79,7 @@ export class CheckoutComponent implements OnInit {
       ) {
         console.log(
           'Office location - Latitude:',
-          this.defaultOfficelocation.latitude
-        );
-        console.log(
+          this.defaultOfficelocation.latitude,
           'Office location - Longitude:',
           this.defaultOfficelocation.longitude
         );
@@ -92,9 +92,7 @@ export class CheckoutComponent implements OnInit {
       ) {
         console.log(
           'Office location - Latitude:',
-          this.officelocation.latitude
-        );
-        console.log(
+          this.officelocation.latitude,
           'Office location - Longitude:',
           this.officelocation.longitude
         );
@@ -118,11 +116,11 @@ export class CheckoutComponent implements OnInit {
     private router: Router,
     private orderService: OrdertypeService,
     private userService: UserService,
-    private taxService : TaxService
+    private taxService: TaxService,
+    private backToLocation: Location
   ) {
     this.cartService.getCartObservable().subscribe((cart) => {
-      console.log('getting cart observable:', cart);
-      this.subtotal = cart.totalPrice;
+      this.subtotal = cart.totalPrice + cart.modifierPrice;
       this.modifierPrice = cart.modifierPrice;
       this.product = cart.items;
       this.checkoutData = cart;
@@ -147,21 +145,16 @@ export class CheckoutComponent implements OnInit {
     });
     this.orderNo = this.generateRandomNumber();
   }
-  formData = {
-    fName: '',
-    lName: '',
-    email: '',
-    phone: '',
-    address: '',
-    cardNumber: '',
-    expiry: '',
-    cvv: '',
-  };
+
   ngOnInit(): void {
+    let services = 3.54;
+    if(this.subtotal){
+      this.serviceFee = this.subtotal * services / 100;
+      
+    }
     this.productService.getrestaurantById().subscribe((res: any) => {
       if (res) {
         this.businessData = res[0];
-        console.log('business data :', this.businessData);
         this.deliveryFee = this.businessData?.deliveryFee;
         if (this.businessData?.delivery === 'true') {
           this.fetchData();
@@ -169,29 +162,37 @@ export class CheckoutComponent implements OnInit {
       }
     });
     this.userData = this.product[0]?.food?.userId;
-    this.userEmail = this.userData?.email;
+    console.log("getting user Data :", this.userData)
+    // this.userEmail = this.userData?.email;
     this.userId = this.userData?._id;
     this.AppFee = this.userData?.appFee;
-    if (this.userData) {
-      this.total = this.subtotal + this.AppFee;
-    }
+    // if (this.userData) {
+    //   this.total = this.subtotal + this.AppFee;
+    // }
 
     this.getTax();
   }
 
   getTax() {
     this.taxService.getTax().subscribe((res: any) => {
+      console.log("get tax :", res)
+
       const applicableTaxes = res.filter(
         (item: any) => item?.userId === this.businessId
       );
-      console.log('Filtered applicable taxes:', applicableTaxes);
+      console.log("gettt taxes :", applicableTaxes)
+
       let totalTaxPercentage = applicableTaxes.reduce(
         (sum: number, tax: any) => sum + Number(tax.taxValue),
         0
       );
-      console.log("first find tatal tax:", totalTaxPercentage)
-      console.log("first find tatal tax:", this.subtotal)
+      console.log("gettt total tax :", totalTaxPercentage)
+
       this.addtax = (this.subtotal * totalTaxPercentage) / 100;
+      console.log("gettt tax :", this.addtax)
+      if(this.addtax){
+        this.total = this.subtotal + this.addtax + this.serviceFee;
+      }
       this.defaultTax = [];
       applicableTaxes.forEach((tax: any) => {
         const taxValue = Number(tax.taxValue);
@@ -201,20 +202,14 @@ export class CheckoutComponent implements OnInit {
           addtax: taxAmount,
         });
       });
-      console.log("stufion  : ", this.addtax)
     });
   }
 
-  onSubmit() {
-    console.log('Form Submitted', this.formData);
-    alert('Checkout Completed Successfully!');
-  }
   async fetchData() {
     try {
       new Promise<void>((resolve) => {
         this.location = this.businessData?.Line1;
         this.ChargesPerKm = this.businessData?.ChargesperKm.toFixed(2);
-
         this.freeDelivery = this.businessData?.ChargesFreeKm;
 
         resolve();
@@ -234,6 +229,11 @@ export class CheckoutComponent implements OnInit {
     } else {
       this.getCustomerLocation(inputValue);
     }
+  }
+  handlePaste(event: ClipboardEvent) {
+    setTimeout(() => {
+      this.addressFieldChange();
+    }, 100);
   }
   capturePrintDataContent(): string {
     return this.printDataDiv?.nativeElement.innerHTML;
@@ -271,7 +271,6 @@ export class CheckoutComponent implements OnInit {
     this.getCustomerLocation(currentlocation1);
   }
   async getCustomerLocation(inputValue: any) {
-    console.log('this is inout value', inputValue);
     if (inputValue == 'CurrentLocation') {
       if ('geolocation' in navigator) {
         navigator.geolocation.getCurrentPosition(async (position: any) => {
@@ -287,29 +286,16 @@ export class CheckoutComponent implements OnInit {
                 longitude: position.coords.longitude,
               };
 
-              console.log(
-                'this is customer location lat',
-                location?.latitude as number
-              );
-              console.log(
-                'this is  customer location long',
-                location?.longitude as number
-              );
-
               const apiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(
                 `${location.latitude},${location.longitude}`
               )}&key=${this.apiKeyForLocation}`;
               try {
-                console.log('Making API Request...');
                 const response = await fetch(apiUrl);
-                console.log('API Response:', response);
 
                 const data = await response.json();
-                console.log('Parsed JSON Data:', data);
 
                 if (data.results && data.results.length > 0) {
                   const address = data.results[0].formatted;
-                  console.log('Place Name:', address);
                   this.customerAdreesName = address;
                 } else {
                   console.error('Unable to fetch place name.');
@@ -321,7 +307,6 @@ export class CheckoutComponent implements OnInit {
               const officeCoordinates = await this.getLocationCoordinates(
                 this.location
               );
-              console.log('officeCoordinates: ', officeCoordinates);
               if (officeCoordinates) {
                 this.officelocation = {
                   latitude: officeCoordinates.latitude,
@@ -338,15 +323,11 @@ export class CheckoutComponent implements OnInit {
                 this.distanceDifference = DistanceMinusTen;
                 const FinaldistanceTax = DistanceMinusTen * this.ChargesPerKm;
                 this.FinaldistanceTax = FinaldistanceTax;
-                console.log(
-                  'final sitance apply become doller ',
-                  FinaldistanceTax
-                );
+
                 this.order.deliveryfee = this.FinaldistanceTax;
                 const charges = this.total + this.FinaldistanceTax;
-                console.log('Applying $10 charges...', charges);
                 this.total = charges;
-                this.initMap();
+                // this.initMap();
               } else {
                 console.error(
                   'Failed to obtain office location coordinates. Check getLocationCoordinates function.'
@@ -367,7 +348,6 @@ export class CheckoutComponent implements OnInit {
         const coordinates = await this.getLocationCoordinates(inputValue);
 
         if (coordinates) {
-          console.log('Coordinates found');
           const location = {
             latitude: coordinates.latitude,
             longitude: coordinates.longitude,
@@ -376,16 +356,12 @@ export class CheckoutComponent implements OnInit {
             `${location.latitude},${location.longitude}`
           )}&key=${this.apiKeyForLocation}`;
           try {
-            console.log('Making API Request...');
             const response = await fetch(apiUrl);
-            console.log('API Response:', response);
 
             const data = await response.json();
-            console.log('Parsed JSON Data:', data);
 
             if (data.results && data.results.length > 0) {
               const address = data.results[0].formatted;
-              console.log('Place Name:', address);
               this.customerAdreesName = address;
             } else {
               console.error('Unable to fetch place name.');
@@ -416,7 +392,7 @@ export class CheckoutComponent implements OnInit {
             this.order.deliveryfee = this.FinaldistanceTax;
             const charges = this.total + this.FinaldistanceTax;
             this.total = charges;
-            this.initMap();
+            // this.initMap();
           } else {
             console.error(
               'Failed to obtain office location coordinates. Check getLocationCoordinates function.'
@@ -437,7 +413,7 @@ export class CheckoutComponent implements OnInit {
     lat2: number,
     lon2: number
   ): number {
-    const earthRadiusKm = 6371; // Radius of the Earth in kilometers
+    const earthRadiusKm = 6371;
 
     const toRadians = (degrees: number) => degrees * (Math.PI / 180);
 
@@ -453,7 +429,7 @@ export class CheckoutComponent implements OnInit {
 
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-    const distance = earthRadiusKm * c; // Distance in kilometers
+    const distance = earthRadiusKm * c;
 
     return distance;
   }
@@ -515,19 +491,21 @@ export class CheckoutComponent implements OnInit {
     return randomNum;
   }
   goBack() {
-    // this.backToLocation.back();
+    this.backToLocation.back();
   }
 
   makePayment(formData: any, order: any, status: any) {
-    console.log('fromData :', formData);
-    Swal.fire({
-      title: 'Orders are temporarily unavailable due to ongoing work in the background. Please try again later.',
-      icon: 'warning',
-      confirmButtonText: 'OK',
-    }).then(() => {
-       this.router.navigate(['/']);
-    });
-    return ;
+    // this.total = this.total + this.addtax + this.serviceFee;
+    // console.log("first", this.total)
+    // Swal.fire({
+    //   title:
+    //     'Orders are temporarily unavailable due to ongoing work in the background. Please try again later.',
+    //   icon: 'warning',
+    //   confirmButtonText: 'OK',
+    // }).then(() => {
+    //   this.router.navigate(['/']);
+    // });
+    // return;
     if (
       !formData ||
       !formData.value ||
@@ -535,7 +513,6 @@ export class CheckoutComponent implements OnInit {
       !formData.value.FirstName ||
       !formData.value.LastName
     ) {
-      console.log('formDAta  in condition :', formData);
       Swal.fire({
         icon: 'error',
         title: 'Form is not valid',
@@ -544,7 +521,7 @@ export class CheckoutComponent implements OnInit {
       return;
     }
     order.paymentStatus = status;
-    this.stripeAccessToken = this.userData?.stripeAcessToken;
+    this.stripeAccessToken = this.userData?.stripe_acess_token;
     const amountInDollars = this.total;
     const amountInCents = Math.round(amountInDollars * 100);
     const feeAmountInDollars = this.AppFee || 30;
@@ -562,7 +539,6 @@ export class CheckoutComponent implements OnInit {
       this.paymentOptionSection.nativeElement.scrollIntoView({
         behavior: 'smooth',
       });
-      console.log('getitng data from intent payment: ', data.paymentIntent);
       if (data) {
         this.showPaymentUi = true;
         this.paymentIntentId = data.paymentIntent.id;
@@ -599,7 +575,7 @@ export class CheckoutComponent implements OnInit {
                 redirect: 'if_required',
               });
               if (error) {
-                console.log('error :', error);
+                console.error('error :', error);
               } else {
                 if (paymentIntent?.status === 'requires_capture') {
                   this.confirmPayment(formData, order);
@@ -616,7 +592,7 @@ export class CheckoutComponent implements OnInit {
             });
           })
           .catch((error) => {
-            console.log('Failed to load Stripe :', error);
+            console.error('Failed to load Stripe :', error);
           });
       } else {
         Swal.fire('Payment error');
@@ -645,7 +621,6 @@ export class CheckoutComponent implements OnInit {
         }
       },
       error: (err) => {
-        console.log('error :', err);
         if (err) {
           Swal.fire('Payment error');
         }
@@ -655,9 +630,6 @@ export class CheckoutComponent implements OnInit {
 
   async createOrder(formData: NgForm, order: Order) {
     try {
-      console.log('formDatasd :', order);
-      console.log('formDatas :', this.order);
-      console.log('formData :', formData.value);
       if (formData.value) {
         this.customerEmail = formData.value?.Email;
         this.customerName = `${formData.value?.FirstName}${formData.value?.LastName}`;
@@ -680,7 +652,6 @@ export class CheckoutComponent implements OnInit {
                 const existingCustomer = res.find(
                   (customer: any) => customer.Email === this.customerEmail
                 );
-                console.log('Customer found. Placing order.. valid valid.');
 
                 let order = {
                   product: this.food,
@@ -690,21 +661,17 @@ export class CheckoutComponent implements OnInit {
                   customerId: existingCustomer?._id,
                   tax: this.order?.tax,
                   taxValue: this.order?.taxValue,
-                  subtotal: this?.total,
+                  subtotal: this?.subtotal,
                   selectedModifiers: this.modifires,
                   priceExclTax: this?.total,
                   PaymentStatus: status,
                   deliveryfee: this.order.deliveryfee,
                 };
-                console.log('first confirmation of res', order);
 
                 this.orderService.createOrder(order).subscribe((res) => {
                   if (res) {
-                    console.log('email send in if block');
-                    console.log('this is mail no 2 user', formData.value.email);
-
-                    // this.sendEmail2(formData.value?.Email);
-                    // this.sendEmail();
+                    this.sendEmail2(formData.value?.Email);
+                    this.sendEmail();
                     this.isLoading = false;
 
                     Swal.fire({
@@ -728,8 +695,6 @@ export class CheckoutComponent implements OnInit {
               }
             } else if (!emailExist) {
               if (formData.status === 'VALID') {
-                console.log('Email not found');
-
                 const newCustomerData = {
                   Email: this.customerEmail,
                   FirstName: formData.value?.FirstName,
@@ -764,14 +729,14 @@ export class CheckoutComponent implements OnInit {
                         taxValue: this.order?.taxValue,
                         PaymentStatus: this.order?.PaymentStatus,
                         priceExclTax: this?.total,
-                        subtotal: this?.total,
+                        subtotal: this?.subtotal,
                         deliveryfee: this.deliveryFee,
                       };
 
                       this.orderService.createOrder(order).subscribe((res) => {
                         if (res) {
-                          // this.sendEmail2(formData.value?.Email);
-                          // this.sendEmail();
+                          this.sendEmail2(formData.value?.Email);
+                          this.sendEmail();
                           this.isLoading = false;
 
                           Swal.fire({

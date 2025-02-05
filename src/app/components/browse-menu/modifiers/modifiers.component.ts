@@ -54,8 +54,6 @@ export class ModifiersComponent implements OnInit{
 
   Notinterested() {
     const result = this.data?.product;
-
-    console.log(result);
     this.cartService.addToCart(result);
     this.uncheckAllCheckboxes();
     this.close();
@@ -117,7 +115,6 @@ export class ModifiersComponent implements OnInit{
     });
     const data = this.data.product;
     data.modifiers = finalArray;
-    console.log("producct modifiers :", data)
     this.cartService;
     this.cartService.addToCart(data);
 
