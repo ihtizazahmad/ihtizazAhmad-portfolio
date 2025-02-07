@@ -64,3 +64,7 @@
   .btn-link{
     color:#ff3131;
   }
+
+  textarea{
+    padding: 0 .6rem;
+  }

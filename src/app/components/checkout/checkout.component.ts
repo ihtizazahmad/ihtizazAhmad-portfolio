@@ -37,7 +37,7 @@ export class CheckoutComponent implements OnInit {
   customerName: any;
   customerPhone: any;
   isLoading: boolean = false;
-  userEmail: any = 'wrapsupfood@gmail.com';
+  userEmail: any;
   stripeAccessToken: any;
   paymentIntentId: any;
   client_secret: any;
@@ -163,7 +163,7 @@ export class CheckoutComponent implements OnInit {
     });
     this.userData = this.product[0]?.food?.userId;
     console.log("getting user Data :", this.userData)
-    // this.userEmail = this.userData?.email;
+    this.userEmail = this.userData?.email;
     this.userId = this.userData?._id;
     this.AppFee = this.userData?.appFee;
     // if (this.userData) {
@@ -178,7 +178,7 @@ export class CheckoutComponent implements OnInit {
       console.log("get tax :", res)
 
       const applicableTaxes = res.filter(
-        (item: any) => item?.userId === this.businessId
+        (item: any) => item?.userId === this.businessId && item?.active === 'true'
       );
       console.log("gettt taxes :", applicableTaxes)
 
@@ -524,7 +524,7 @@ export class CheckoutComponent implements OnInit {
     this.stripeAccessToken = this.userData?.stripe_acess_token;
     const amountInDollars = this.total;
     const amountInCents = Math.round(amountInDollars * 100);
-    const feeAmountInDollars = this.AppFee || 30;
+    const feeAmountInDollars = this.AppFee || 0;
     const feeAmountInCents = Math.round(feeAmountInDollars * 100);
 
     let data = {
