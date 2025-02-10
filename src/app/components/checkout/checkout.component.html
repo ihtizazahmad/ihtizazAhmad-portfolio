@@ -168,10 +168,10 @@
               <th>Service Fee</th>
               <td>{{ serviceFee || 0 | currency }}</td>
             </tr>
-            <!-- <tr>
-              <th>POS surcharges:</th>
-              <td>{{ AppFee || 0 | currency }}</td>
-            </tr> -->
+            <tr>
+              <th>Discount</th>
+              <td>{{ discountPrice || 0 | currency }}</td>
+            </tr>
             <tr>
               <th>Total</th>
               <td>{{ total || 0 | currency }}</td>
@@ -181,8 +181,9 @@
         <div class="mb-4">
           <label for="note"><strong> Note: </strong></label>
           <textarea class="w-100 border rounded mt-2"
-            name=""
-            id=""
+            name="note"
+            id="note"
+            [(ngModel)]="note"
             rows="5"
             placeholder="Write your special instructions here..."
           ></textarea>
@@ -421,17 +422,25 @@
             </td>
           </tr>
           <tr *ngIf="addtax">
-            <th style="text-align: left; padding-left: 5px">Tax:</th>
+            <th style="text-align: left; padding-left: 5px">Tax</th>
             <td style="text-align: right; padding-right: 5px">
               {{ addtax || 0 | currency }}
             </td>
           </tr>
           <tr>
             <th style="text-align: left; padding-left: 5px; ">
-              Service Fee:
+              Service Fee
             </th>
             <td style="text-align: right; padding-right: 5px">
               {{ serviceFee || 0 | currency }}
+            </td>
+          </tr>
+          <tr>
+            <th style="text-align: left; padding-left: 5px; ">
+              Discount
+            </th>
+            <td style="text-align: right; padding-right: 5px">
+              {{ discountPrice || 0 | currency }}
             </td>
           </tr>
 
@@ -443,7 +452,7 @@
           </tr>
           <tr>
             <th style="text-align: left; padding-left: 5px; color: #f6871f">
-              Total:
+              Total
             </th>
             <td style="text-align: right; padding-right: 5px">
               {{ total | currency }}
@@ -623,15 +632,21 @@
             </td>
           </tr>
           <tr *ngIf="addtax">
-            <th style="text-align: left; padding-left: 5px">Tax:</th>
+            <th style="text-align: left; padding-left: 5px">Tax</th>
             <td style="text-align: right; padding-right: 5px">
               {{ addtax || 0 | currency }}
             </td>
           </tr>
           <tr>
-            <th style="text-align: left; padding-left: 5px">Service Fee:</th>
+            <th style="text-align: left; padding-left: 5px">Service Fee</th>
             <td style="text-align: right; padding-right: 5px">
               {{ serviceFee || 0 | currency }}
+            </td>
+          </tr>
+          <tr>
+            <th style="text-align: left; padding-left: 5px">Discount</th>
+            <td style="text-align: right; padding-right: 5px">
+              {{ discountPrice || 0 | currency }}
             </td>
           </tr>
 
@@ -642,7 +657,7 @@
             </td>
           </tr>
           <tr>
-            <th style="text-align: left; padding-left: 5px; color: #f6871f">Total:</th>
+            <th style="text-align: left; padding-left: 5px; color: #f6871f">Total</th>
             <td style="text-align: right; padding-right: 5px">
               {{ total | currency }}
             </td>
