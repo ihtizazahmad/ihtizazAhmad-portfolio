@@ -37,7 +37,7 @@ export class CheckoutComponent implements OnInit {
   customerName: any;
   customerPhone: any;
   isLoading: boolean = false;
-  userEmail: any;
+  userEmail:  string = 'WrapsUpOrlando@gmail.com';
   stripeAccessToken: any;
   paymentIntentId: any;
   client_secret: any;
@@ -49,12 +49,12 @@ export class CheckoutComponent implements OnInit {
   businessData: any;
   deliveryFee: any;
   location: any;
-  ChargesPerKm: any;
+  ChargesPerKm: number = 0;
   freeDelivery: any;
   customerAdreesName: any;
   officelocation: any;
   defaultOfficelocation: any;
-  FinaldistanceTax: any;
+  FinaldistanceTax: number = 0;
   apiKeyForLocation = '5ef919622d0841d0832dba6448c69161';
   distance: any;
   distanceDifference: any;
@@ -64,10 +64,12 @@ export class CheckoutComponent implements OnInit {
   taxId: any;
   taxvalue: any;
   taxName: any;
-  addtax: any;
+  addtax: number = 0;
   defaultTax: any[] = [];
   businessId = '674ba2d30e062b07414d6704';
-  serviceFee: any;
+  serviceFee: number = 0;
+  discountPrice: number = 0;
+  note: string = '';
 
   initMap() {
     this.map?.locate({ setView: true, maxZoom: 15 });
@@ -147,11 +149,6 @@ export class CheckoutComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    let services = 3.54;
-    if(this.subtotal){
-      this.serviceFee = this.subtotal * services / 100;
-      
-    }
     this.productService.getrestaurantById().subscribe((res: any) => {
       if (res) {
         this.businessData = res[0];
@@ -163,7 +160,7 @@ export class CheckoutComponent implements OnInit {
     });
     this.userData = this.product[0]?.food?.userId;
     console.log("getting user Data :", this.userData)
-    this.userEmail = this.userData?.email;
+    // this.userEmail = this.userData?.email;
     this.userId = this.userData?._id;
     this.AppFee = this.userData?.appFee;
     // if (this.userData) {
@@ -174,6 +171,8 @@ export class CheckoutComponent implements OnInit {
   }
 
   getTax() {
+    let services = 3.54;   // Service Fee is 3.54% 
+    let discount = 12;   // Added discount of 12% from admin
     this.taxService.getTax().subscribe((res: any) => {
       console.log("get tax :", res)
 
@@ -188,11 +187,11 @@ export class CheckoutComponent implements OnInit {
       );
       console.log("gettt total tax :", totalTaxPercentage)
 
+        this.serviceFee = (this.subtotal * services) / 100;
+        this.discountPrice = (this.subtotal * discount) / 100;
       this.addtax = (this.subtotal * totalTaxPercentage) / 100;
       console.log("gettt tax :", this.addtax)
-      if(this.addtax){
-        this.total = this.subtotal + this.addtax + this.serviceFee;
-      }
+      
       this.defaultTax = [];
       applicableTaxes.forEach((tax: any) => {
         const taxValue = Number(tax.taxValue);
@@ -202,6 +201,8 @@ export class CheckoutComponent implements OnInit {
           addtax: taxAmount,
         });
       });
+      this.total = this.subtotal + this.serviceFee - this.discountPrice + this.addtax;
+      console.log("Final total:", this.total);
     });
   }
 
@@ -495,8 +496,6 @@ export class CheckoutComponent implements OnInit {
   }
 
   makePayment(formData: any, order: any, status: any) {
-    // this.total = this.total + this.addtax + this.serviceFee;
-    // console.log("first", this.total)
     // Swal.fire({
     //   title:
     //     'Orders are temporarily unavailable due to ongoing work in the background. Please try again later.',
@@ -654,21 +653,36 @@ export class CheckoutComponent implements OnInit {
                 );
 
                 let order = {
-                  product: this.food,
-                  userId: this.userId,
-                  orderStatus: 'online',
-                  productWithQty: this.productWithQty,
-                  customerId: existingCustomer?._id,
-                  tax: this.order?.tax,
-                  taxValue: this.order?.taxValue,
-                  subtotal: this?.subtotal,
-                  selectedModifiers: this.modifires,
-                  priceExclTax: this?.total,
-                  PaymentStatus: status,
-                  deliveryfee: this.order.deliveryfee,
+                  // product: this.food,
+                  // userId: this.userId,
+                  // orderStatus: 'online',
+                  // productWithQty: this.productWithQty,
+                  // customerId: existingCustomer?._id,
+                  // tax: this.order?.tax,
+                  // taxValue: this.order?.taxValue,
+                  // subtotal: this?.subtotal,
+                  // selectedModifiers: this.modifires,
+                  // priceExclTax: this?.total,
+                  // PaymentStatus: status,
+                  // deliveryfee: this.order.deliveryfee,
+                  orderNo: this.orderNo,
+              product: this.food,
+              orderStatus: 'new order',
+              productWithQty: this.productWithQty,
+              customerId: existingCustomer?._id,
+              tax: this.defaultTax,
+              selectedModifiers: this.modifires,
+              priceExclTax: this?.total,
+              Status: 'patronpal order',
+              orderType: "delivery",
+              PaymentStatus: 'online',
+              deliveryfee: this.FinaldistanceTax,
+              paymentIntentId: this.paymentIntentId,
+              Amount: this.total,
+              userId: this.userId,
                 };
 
-                this.orderService.createOrder(order).subscribe((res) => {
+                this.orderService.postSubOnlineOrders(order).subscribe((res) => {
                   if (res) {
                     this.sendEmail2(formData.value?.Email);
                     this.sendEmail();
@@ -719,21 +733,37 @@ export class CheckoutComponent implements OnInit {
                   .subscribe((res: any) => {
                     if (res) {
                       let order = {
-                        customerId: res._id,
+                        // customerId: res._id,
+                        // product: this.food,
+                        // orderStatus: 'online',
+                        // userId: this.userData,
+                        // productWithQty: this.productWithQty,
+                        // selectedModifiers: this.modifires,
+                        // tax: this.order?.tax,
+                        // taxValue: this.order?.taxValue,
+                        // PaymentStatus: this.order?.PaymentStatus,
+                        // priceExclTax: this?.total,
+                        // subtotal: this?.subtotal,
+                        // deliveryfee: this.deliveryFee,
+
+                        orderNo: this.orderNo,
                         product: this.food,
-                        orderStatus: 'online',
-                        userId: this.userData,
+                        orderStatus: 'new order',
                         productWithQty: this.productWithQty,
+                        customerId: res?._id,
+                        tax: this.defaultTax,
                         selectedModifiers: this.modifires,
-                        tax: this.order?.tax,
-                        taxValue: this.order?.taxValue,
-                        PaymentStatus: this.order?.PaymentStatus,
                         priceExclTax: this?.total,
-                        subtotal: this?.subtotal,
-                        deliveryfee: this.deliveryFee,
+                        Status: 'patronpal order',
+                        orderType: "delivery",
+                        PaymentStatus: 'online',
+                        deliveryfee: this.FinaldistanceTax,
+                        paymentIntentId: this.paymentIntentId,
+                        Amount: this.total,
+                        userId: this.userId,
                       };
 
-                      this.orderService.createOrder(order).subscribe((res) => {
+                      this.orderService.postSubOnlineOrders(order).subscribe((res) => {
                         if (res) {
                           this.sendEmail2(formData.value?.Email);
                           this.sendEmail();
