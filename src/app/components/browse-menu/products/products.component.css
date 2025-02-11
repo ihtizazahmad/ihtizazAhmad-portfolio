@@ -71,7 +71,7 @@ p {
   height: 199px;
   border-radius: 12px;
   position: relative;
-  /* object-fit: cover; */
+  object-fit: cover;
 }
 .btn-plus {
   width: 88px;
