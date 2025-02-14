@@ -70,6 +70,8 @@ export class CheckoutComponent implements OnInit {
   serviceFee: number = 0;
   discountPrice: number = 0;
   note: string = '';
+  selectedOption: string = 'delivery';
+  businessLocation: string = "6802 Wilkow Dr, Orlando, FL, ";
 
   initMap() {
     this.map?.locate({ setView: true, maxZoom: 15 });
@@ -189,7 +191,9 @@ export class CheckoutComponent implements OnInit {
       console.log('gettt total tax :', totalTaxPercentage);
 
       this.serviceFee = (this.subtotal * services) / 100;
-      this.discountPrice = (this.subtotal * discount) / 100;
+      if(this.subtotal > 50){
+        this.discountPrice = (this.subtotal * discount) / 100;
+      }
       this.addtax = (this.subtotal * totalTaxPercentage) / 100;
       console.log('gettt tax :', this.addtax);
 
@@ -328,8 +332,11 @@ export class CheckoutComponent implements OnInit {
                 this.FinaldistanceTax = FinaldistanceTax;
 
                 this.order.deliveryfee = this.FinaldistanceTax;
-                const charges = this.total + this.FinaldistanceTax;
-                this.total = charges;
+                if(this.selectedOption == "delivery"){
+                  const charges = this.total + this.FinaldistanceTax;
+                  console.log("charges 222: ",charges);
+                  this.total = charges;
+                }
                 // this.initMap();
               } else {
                 console.error(
@@ -393,8 +400,11 @@ export class CheckoutComponent implements OnInit {
             const FinaldistanceTax = DistanceMinusTen * this.ChargesPerKm;
             this.FinaldistanceTax = FinaldistanceTax;
             this.order.deliveryfee = this.FinaldistanceTax;
-            const charges = this.total + this.FinaldistanceTax;
-            this.total = charges;
+            if(this.selectedOption === 'delivery'){
+
+              const charges = this.total + this.FinaldistanceTax;
+              this.total = charges;
+            }
             // this.initMap();
           } else {
             console.error(
@@ -447,6 +457,21 @@ export class CheckoutComponent implements OnInit {
       this.FinaldistanceTax = 0;
       this.officelocation.latitude = 0;
       this.officelocation.longitude = 0;
+    }
+  }
+  selectOption(option: string) {
+    this.selectedOption = option;
+    
+    if(this.selectedOption === 'pickup'){
+      const charges = this.total - this.FinaldistanceTax;
+      this.total = charges;
+      console.log(this.total, this.FinaldistanceTax)
+      this.customerAdreesName = '';
+      this.FinaldistanceTax = 0;
+      this.officelocation = '';
+      this.defaultOfficelocation= '';
+  }else if(this.selectedOption == 'delivery'){
+      this.FinaldistanceTax=0
     }
   }
 
@@ -674,13 +699,22 @@ export class CheckoutComponent implements OnInit {
                   customerId: existingCustomer?._id,
                   tax: this.defaultTax,
                   selectedModifiers: this.modifires,
-                  priceExclTax: this?.total,
+                  priceExclTax: this?.total.toFixed(2),
                   Status: 'patronpal order',
-                  orderType: 'delivery',
+                  deliveryOptions: this.selectedOption === 'delivery' ? {
+                    dropOffAddress: this.location,
+                    // dropOffInstructions: this.note,
+                    } : undefined,
+                    pickupOptions: this.selectedOption === 'pickup' ? {
+                    pickupAddress: this.businessLocation,
+                    pickupInstructions: "Standard Pickup",
+                    schedulePickup: "Select time"
+                    } : undefined,
+                    orderType: this.selectedOption,
                   PaymentStatus: 'online',
-                  deliveryfee: this.FinaldistanceTax,
+                  deliveryfee: this.selectedOption === 'delivery' ?  this.FinaldistanceTax.toFixed(2) : 0,
                   paymentIntentId: this.paymentIntentId,
-                  Amount: this.total,
+                  Amount: this.total.toFixed(2),
                   userId: this.userId,
                   note: this.note,
                 };
@@ -758,13 +792,22 @@ export class CheckoutComponent implements OnInit {
                         customerId: res?._id,
                         tax: this.defaultTax,
                         selectedModifiers: this.modifires,
-                        priceExclTax: this?.total,
+                        deliveryOptions: this.selectedOption === 'delivery' ? {
+                          dropOffAddress: this.location,
+                          // dropOffInstructions: this.note,
+                          } : undefined,
+                          pickupOptions: this.selectedOption === 'pickup' ? {
+                          pickupAddress: this.businessLocation,
+                          pickupInstructions: "Standard Pickup",
+                          schedulePickup: "Select time"
+                          } : undefined,
+                        priceExclTax: this?.total.toFixed(2),
                         Status: 'patronpal order',
-                        orderType: 'delivery',
+                        orderType: this.selectedOption,
                         PaymentStatus: 'online',
-                        deliveryfee: this.FinaldistanceTax,
+                        deliveryfee: this.selectedOption === 'delivery' ?  this.FinaldistanceTax.toFixed(2) : 0,
                         paymentIntentId: this.paymentIntentId,
-                        Amount: this.total,
+                        Amount: this.total.toFixed(2),
                         userId: this.userId,
                         note: this.note,
                       };

@@ -1,4 +1,19 @@
 <div class="container-fluid">
+  <div class="d-flex justify-content-end mt-4">
+    <div class="btn-group-toggle custom-btn-group">
+        <label class="custom-btn" [class.active]="selectedOption === 'delivery'"
+            (click)="selectOption('delivery')">
+            <input type="radio" name="options" autocomplete="off" [checked]="selectedOption === 'delivery'">
+            Delivery
+        </label>
+        <label class="custom-btn" [class.active]="selectedOption === 'pickup'" (click)="selectOption('pickup')">
+            <input type="radio" name="options" autocomplete="off" [checked]="selectedOption === 'pickup'">
+            Pickup
+        </label>
+    </div>
+
+
+</div>
   <div class="my-5">
     <!-- Checkout Header -->
     <div class="bg-success text-white py-2 px-4 rounded-top">
@@ -80,7 +95,7 @@
             <p style="color: red">Please enter your Phone Number</p>
           </div>
         </div>
-        <div class="mb-3 col-md-6" *ngIf="businessData?.delivery === 'true'">
+        <div class="mb-3 col-md-6" *ngIf="selectedOption === 'delivery'">
           <label for="address" class="form-label">Shipping Address</label>
           <textarea
             (input)="valueChanges()"
@@ -92,7 +107,7 @@
             placeholder="Enter Your Address or load current location"
           ></textarea>
         </div>
-        <div class="col-md-6" *ngIf="businessData?.delivery === 'true'">
+        <div class="col-md-6" *ngIf="selectedOption === 'delivery'">
           <div class="inputdiv">
             <label for="searchButton" class="mb-2">Current Location</label>
             <div class="d-flex w-100">
@@ -107,7 +122,7 @@
             </div>
           </div>
         </div>
-        <div class="col-md-12" *ngIf="businessData?.delivery === 'false'">
+        <!-- <div class="col-md-12" *ngIf="businessData?.delivery === 'false'">
           <div class="inputdiv">
             <label for="address" class="mb-2">Street address</label>
             <input
@@ -121,11 +136,21 @@
               placeholder="Enter Your Address"
             />
           </div>
-        </div>
+        </div> -->
       </div>
     </form>
   </div>
 
+  <div class="row mt-5" *ngIf="selectedOption === 'pickup'">
+    <div class="col-md-12">
+      <div>
+        <h2>Pick Up Address</h2>
+      </div>
+      <div>
+        <h3 class="fs-4"> {{businessLocation}}</h3>
+      </div>
+    </div>
+  </div>
   <div class="row mt-5">
     <div class="col-md-12">
       <div>
@@ -156,7 +181,7 @@
               <td>{{ subtotal || 0 | currency }}</td>
             </tr>
 
-            <tr *ngIf="businessData?.delivery === 'true'">
+            <tr *ngIf="selectedOption === 'delivery'">
               <th>Delivery Fee</th>
               <td>{{ FinaldistanceTax || 0 | currency }}</td>
             </tr>
@@ -168,7 +193,7 @@
               <th>Service Fee</th>
               <td>{{ serviceFee || 0 | currency }}</td>
             </tr>
-            <tr>
+            <tr *ngIf="discountPrice">
               <th>Discount</th>
               <td>{{ discountPrice || 0 | currency }}</td>
             </tr>
@@ -193,7 +218,7 @@
 
     <div
       class="col-md-12"
-      *ngIf="businessData?.delivery === 'true' && customerAdreesName"
+      *ngIf="selectedOption === 'delivery' && customerAdreesName"
     >
       <div class="text-center" style="font-family: sans-serif">
         <h5>
@@ -435,7 +460,7 @@
               {{ serviceFee || 0 | currency }}
             </td>
           </tr>
-          <tr>
+          <tr *ngIf="discountPrice">
             <th style="text-align: left; padding-left: 5px; ">
               Discount
             </th>
@@ -444,7 +469,7 @@
             </td>
           </tr>
 
-          <tr *ngIf="businessData?.delivery === 'true'">
+          <tr *ngIf="selectedOption === 'delivery'">
             <th style="text-align: left; padding-left: 5px">Delivery Fee</th>
             <td style="text-align: right; padding-right: 5px">
               {{ FinaldistanceTax || 0 | currency }}
@@ -643,14 +668,14 @@
               {{ serviceFee || 0 | currency }}
             </td>
           </tr>
-          <tr>
+          <tr *ngIf="discountPrice">
             <th style="text-align: left; padding-left: 5px">Discount</th>
             <td style="text-align: right; padding-right: 5px">
               {{ discountPrice || 0 | currency }}
             </td>
           </tr>
 
-          <tr *ngIf="businessData?.delivery === 'true'">
+          <tr *ngIf="selectedOption === 'delivery'">
             <th style="text-align: left; padding-left: 5px">Delivery Fee</th>
             <td style="text-align: right; padding-right: 5px">
               {{ FinaldistanceTax || 0 | currency }}
