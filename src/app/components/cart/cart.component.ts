@@ -17,7 +17,7 @@ export class CartComponent implements OnInit {
   totalCount: any;
   totalPrice!: any;
   subtotal: number = 0;
-  businessId = '66fd9868aef1d315dca00d36';
+  businessId = '66fc5fb8aef1d315dc9fd4e6';
 
   // //  for test mode-->
   // businessId = '65d6e2acf4cb2c368afded71';

@@ -37,7 +37,7 @@ export class CheckoutComponent implements OnInit {
   customerName: any;
   customerPhone: any;
   isLoading: boolean = false;
-  userEmail: string = 'WrapsUpOrlando@gmail.com';
+  userEmail: any;
   stripeAccessToken: any;
   paymentIntentId: any;
   client_secret: any;
@@ -162,19 +162,19 @@ export class CheckoutComponent implements OnInit {
     });
     this.userData = this.product[0]?.food?.userId;
     console.log('getting user Data :', this.userData);
-    // this.userEmail = this.userData?.email;
+    this.userEmail = this.userData?.email;
     this.userId = this.userData?._id;
     this.AppFee = this.userData?.appFee;
-    // if (this.userData) {
-    //   this.total = this.subtotal + this.AppFee;
-    // }
+    if (this.userData) {
+      this.total = this.subtotal + this.AppFee;
+    }
 
     this.getTax();
   }
 
   getTax() {
-    let services = 3.54; // Service Fee is 3.54%
-    let discount = 12; // Added discount of 12% from admin
+    // let services = 3.54; 
+    // let discount = 12; 
     this.taxService.getTax().subscribe((res: any) => {
       console.log('get tax :', res);
 
@@ -190,10 +190,10 @@ export class CheckoutComponent implements OnInit {
       );
       console.log('gettt total tax :', totalTaxPercentage);
 
-      this.serviceFee = (this.subtotal * services) / 100;
-      if(this.subtotal > 50){
-        this.discountPrice = (this.subtotal * discount) / 100;
-      }
+      // this.serviceFee = (this.subtotal * services) / 100;
+      // if(this.subtotal > 50){
+      //   this.discountPrice = (this.subtotal * discount) / 100;
+      // }
       this.addtax = (this.subtotal * totalTaxPercentage) / 100;
       console.log('gettt tax :', this.addtax);
 
