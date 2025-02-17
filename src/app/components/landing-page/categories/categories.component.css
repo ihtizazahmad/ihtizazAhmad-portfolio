@@ -19,8 +19,8 @@ color: #83d51a;
     cursor: pointer;
 }
 img{
-    object-fit: contain;
-    width: 80%;
+    object-fit: cover;
+    width: 100%;
     align-self: center;
     height: 250px;
     border-radius: 16px 16px 0px 0px;

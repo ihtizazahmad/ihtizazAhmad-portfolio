@@ -21,9 +21,10 @@ export class CategoriesComponent implements OnInit {
 
   private loadSubCategories() {
     this.loader = true;
-    this.categoryService.getSubCategories().subscribe(
+    this.categoryService.getCategory().subscribe(
       (categories) => {
         this.allCategories = categories;
+        console.log("categories",categories)
         this.loader = false;
       },
       (error) => {

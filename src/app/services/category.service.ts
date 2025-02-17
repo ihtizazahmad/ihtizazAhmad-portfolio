@@ -11,14 +11,14 @@ export class CategoryService {
   public apiUrl = environment.apiUrl
   parentcategoryUrl = this.apiUrl + '/parentcategory';  
   categoryUrl = this.apiUrl + '/category'; 
-  userId = '674ba2d30e062b07414d6704'; 
+  userId = '66fc5fb8aef1d315dc9fd4e6'; 
   //  for test mode-->
   //  userId = '65d6e2acf4cb2c368afded71'; 
   constructor(private http:HttpClient,) { }
 
   
   getCategory():Observable<any> {
-    return this.http.get<any>(this.parentcategoryUrl)
+    return this.http.get<any>(this.parentcategoryUrl + `?userId=${this.userId}`)
    }
    getCategoryById(id: string): Observable<any>{
      return this.http.get<any>(this.parentcategoryUrl +'/'+ id )

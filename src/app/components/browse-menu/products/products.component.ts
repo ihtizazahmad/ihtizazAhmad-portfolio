@@ -15,15 +15,15 @@ import { CartService } from 'src/app/services/cart.service';
 })
 export class ProductsComponent implements OnInit {
   loader: boolean = true;
-  businessId = '674ba2d30e062b07414d6704';
-   //  for test mode-->
+  businessId = '66fc5fb8aef1d315dc9fd4e6';
+  //  for test mode-->
   //  businessId = '65d6e2acf4cb2c368afded71';
   category_id: any;
-  filteredProducts: any[] = []; 
+  filteredProducts: any[] = [];
   products: any[] = [];
   allProducts: any[] = [];
   categories: any[] = [];
-  activeCategory: string = 'All'; 
+  activeCategory: string = 'All';
   catName: any = '';
   noProducts: boolean = false;
   modifiers: any;
@@ -35,7 +35,7 @@ export class ProductsComponent implements OnInit {
     private categoryService: CategoryService,
     public dialog: MatDialog,
     private cartService: CartService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -62,9 +62,10 @@ export class ProductsComponent implements OnInit {
     this.productService.getProducts().subscribe(
       (res: any) => {
         this.allProducts = res;
+        console.log("this.allProducts", this.allProducts)
         this.filteredProducts = [...this.allProducts];
         if (this.catName) {
-          this.showProducts(this.catName); 
+          this.showProducts(this.catName);
         }
         this.noProducts = this.filteredProducts.length === 0;
       },
@@ -84,15 +85,14 @@ export class ProductsComponent implements OnInit {
       this.filteredProducts = [...this.allProducts];
     } else {
       this.activeCategory = category;
-      this.filteredProducts = this.allProducts.filter(product =>
-        product.categoryId && product.categoryId[0]?.name === category
+      this.filteredProducts = this.allProducts.filter(product =>product.categoryParents && product.categoryParents[0]?.name  === category
       );
     }
     this.noProducts = this.filteredProducts.length === 0;
   }
 
   getCategory(): void {
-    this.categoryService.getSubCategories().subscribe((res: any) => {
+    this.categoryService.getCategory().subscribe((res: any) => {
       this.categories = res;
     });
   }
@@ -109,7 +109,7 @@ export class ProductsComponent implements OnInit {
   openModifierModal(product: any, modifiers: any[]): void {
     const dialogRef = this.dialog.open(ModifiersComponent, {
       data: { product, modifiers },
-      width:'50%',
+      width: '50%',
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -119,19 +119,19 @@ export class ProductsComponent implements OnInit {
   getShortDescription(description: string | undefined, limit: number): string {
     if (!description) return '';
     const words = description.split(' ');
-    return words.length > limit 
-      ? words.slice(0, limit).join(' ') + '...' 
+    return words.length > limit
+      ? words.slice(0, limit).join(' ') + '...'
       : description;
   }
 
-  getModifiers(){
+  getModifiers() {
     this.productService.getModierByUserId().subscribe({
-      next: (res : any) =>{
+      next: (res: any) => {
         this.modifiers = res;
-      }, error: (error: any) =>{
+      }, error: (error: any) => {
         console.log("getting error :", error)
       }
     })
   }
-  
+
 }
