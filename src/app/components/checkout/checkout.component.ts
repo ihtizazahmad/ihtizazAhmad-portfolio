@@ -37,7 +37,7 @@ export class CheckoutComponent implements OnInit {
   customerName: any;
   customerPhone: any;
   isLoading: boolean = false;
-  userEmail: any = 'wrapsupfood@gmail.com';
+  userEmail: string = 'WrapsUpOrlando@gmail.com';
   stripeAccessToken: any;
   paymentIntentId: any;
   client_secret: any;
@@ -49,12 +49,12 @@ export class CheckoutComponent implements OnInit {
   businessData: any;
   deliveryFee: any;
   location: any;
-  ChargesPerKm: any;
+  ChargesPerKm: number = 0;
   freeDelivery: any;
   customerAdreesName: any;
   officelocation: any;
   defaultOfficelocation: any;
-  FinaldistanceTax: any;
+  FinaldistanceTax: number = 0;
   apiKeyForLocation = '5ef919622d0841d0832dba6448c69161';
   distance: any;
   distanceDifference: any;
@@ -64,10 +64,14 @@ export class CheckoutComponent implements OnInit {
   taxId: any;
   taxvalue: any;
   taxName: any;
-  addtax: any;
+  addtax: number = 0;
   defaultTax: any[] = [];
   businessId = '674ba2d30e062b07414d6704';
-  serviceFee: any;
+  serviceFee: number = 0;
+  discountPrice: number = 0;
+  note: string = '';
+  selectedOption: string = 'delivery';
+  businessLocation: string = "6802 Wilkow Dr, Orlando, FL, ";
 
   initMap() {
     this.map?.locate({ setView: true, maxZoom: 15 });
@@ -147,11 +151,6 @@ export class CheckoutComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    let services = 3.54;
-    if(this.subtotal){
-      this.serviceFee = this.subtotal * services / 100;
-      
-    }
     this.productService.getrestaurantById().subscribe((res: any) => {
       if (res) {
         this.businessData = res[0];
@@ -162,7 +161,7 @@ export class CheckoutComponent implements OnInit {
       }
     });
     this.userData = this.product[0]?.food?.userId;
-    console.log("getting user Data :", this.userData)
+    console.log('getting user Data :', this.userData);
     // this.userEmail = this.userData?.email;
     this.userId = this.userData?._id;
     this.AppFee = this.userData?.appFee;
@@ -174,25 +173,30 @@ export class CheckoutComponent implements OnInit {
   }
 
   getTax() {
+    let services = 3.54; // Service Fee is 3.54%
+    let discount = 12; // Added discount of 12% from admin
     this.taxService.getTax().subscribe((res: any) => {
-      console.log("get tax :", res)
+      console.log('get tax :', res);
 
       const applicableTaxes = res.filter(
-        (item: any) => item?.userId === this.businessId
+        (item: any) =>
+          item?.userId === this.businessId && item?.active === 'true'
       );
-      console.log("gettt taxes :", applicableTaxes)
+      console.log('gettt taxes :', applicableTaxes);
 
       let totalTaxPercentage = applicableTaxes.reduce(
         (sum: number, tax: any) => sum + Number(tax.taxValue),
         0
       );
-      console.log("gettt total tax :", totalTaxPercentage)
+      console.log('gettt total tax :', totalTaxPercentage);
 
-      this.addtax = (this.subtotal * totalTaxPercentage) / 100;
-      console.log("gettt tax :", this.addtax)
-      if(this.addtax){
-        this.total = this.subtotal + this.addtax + this.serviceFee;
+      this.serviceFee = (this.subtotal * services) / 100;
+      if(this.subtotal > 50){
+        this.discountPrice = (this.subtotal * discount) / 100;
       }
+      this.addtax = (this.subtotal * totalTaxPercentage) / 100;
+      console.log('gettt tax :', this.addtax);
+
       this.defaultTax = [];
       applicableTaxes.forEach((tax: any) => {
         const taxValue = Number(tax.taxValue);
@@ -202,6 +206,9 @@ export class CheckoutComponent implements OnInit {
           addtax: taxAmount,
         });
       });
+      this.total =
+        this.subtotal + this.serviceFee - this.discountPrice + this.addtax;
+      console.log('Final total:', this.total);
     });
   }
 
@@ -325,8 +332,11 @@ export class CheckoutComponent implements OnInit {
                 this.FinaldistanceTax = FinaldistanceTax;
 
                 this.order.deliveryfee = this.FinaldistanceTax;
-                const charges = this.total + this.FinaldistanceTax;
-                this.total = charges;
+                if(this.selectedOption == "delivery"){
+                  const charges = this.total + this.FinaldistanceTax;
+                  console.log("charges 222: ",charges);
+                  this.total = charges;
+                }
                 // this.initMap();
               } else {
                 console.error(
@@ -390,8 +400,11 @@ export class CheckoutComponent implements OnInit {
             const FinaldistanceTax = DistanceMinusTen * this.ChargesPerKm;
             this.FinaldistanceTax = FinaldistanceTax;
             this.order.deliveryfee = this.FinaldistanceTax;
-            const charges = this.total + this.FinaldistanceTax;
-            this.total = charges;
+            if(this.selectedOption === 'delivery'){
+
+              const charges = this.total + this.FinaldistanceTax;
+              this.total = charges;
+            }
             // this.initMap();
           } else {
             console.error(
@@ -446,6 +459,21 @@ export class CheckoutComponent implements OnInit {
       this.officelocation.longitude = 0;
     }
   }
+  selectOption(option: string) {
+    this.selectedOption = option;
+    
+    if(this.selectedOption === 'pickup'){
+      const charges = this.total - this.FinaldistanceTax;
+      this.total = charges;
+      console.log(this.total, this.FinaldistanceTax)
+      this.customerAdreesName = '';
+      this.FinaldistanceTax = 0;
+      this.officelocation = '';
+      this.defaultOfficelocation= '';
+  }else if(this.selectedOption == 'delivery'){
+      this.FinaldistanceTax=0
+    }
+  }
 
   async getLocationCoordinates(location: any) {
     try {
@@ -495,8 +523,6 @@ export class CheckoutComponent implements OnInit {
   }
 
   makePayment(formData: any, order: any, status: any) {
-    // this.total = this.total + this.addtax + this.serviceFee;
-    // console.log("first", this.total)
     // Swal.fire({
     //   title:
     //     'Orders are temporarily unavailable due to ongoing work in the background. Please try again later.',
@@ -524,7 +550,7 @@ export class CheckoutComponent implements OnInit {
     this.stripeAccessToken = this.userData?.stripe_acess_token;
     const amountInDollars = this.total;
     const amountInCents = Math.round(amountInDollars * 100);
-    const feeAmountInDollars = this.AppFee || 30;
+    const feeAmountInDollars = this.AppFee || 0;
     const feeAmountInCents = Math.round(feeAmountInDollars * 100);
 
     let data = {
@@ -654,36 +680,63 @@ export class CheckoutComponent implements OnInit {
                 );
 
                 let order = {
+                  // product: this.food,
+                  // userId: this.userId,
+                  // orderStatus: 'online',
+                  // productWithQty: this.productWithQty,
+                  // customerId: existingCustomer?._id,
+                  // tax: this.order?.tax,
+                  // taxValue: this.order?.taxValue,
+                  // subtotal: this?.subtotal,
+                  // selectedModifiers: this.modifires,
+                  // priceExclTax: this?.total,
+                  // PaymentStatus: status,
+                  // deliveryfee: this.order.deliveryfee,
+                  orderNo: this.orderNo,
                   product: this.food,
-                  userId: this.userId,
-                  orderStatus: 'online',
+                  orderStatus: 'new order',
                   productWithQty: this.productWithQty,
                   customerId: existingCustomer?._id,
-                  tax: this.order?.tax,
-                  taxValue: this.order?.taxValue,
-                  subtotal: this?.subtotal,
+                  tax: this.defaultTax,
                   selectedModifiers: this.modifires,
-                  priceExclTax: this?.total,
-                  PaymentStatus: status,
-                  deliveryfee: this.order.deliveryfee,
+                  priceExclTax: this?.total.toFixed(2),
+                  Status: 'patronpal order',
+                  deliveryOptions: this.selectedOption === 'delivery' ? {
+                    dropOffAddress: this.location,
+                    // dropOffInstructions: this.note,
+                    } : undefined,
+                    pickupOptions: this.selectedOption === 'pickup' ? {
+                    pickupAddress: this.businessLocation,
+                    pickupInstructions: "Standard Pickup",
+                    schedulePickup: "Select time"
+                    } : undefined,
+                    orderType: this.selectedOption,
+                  PaymentStatus: 'online',
+                  deliveryfee: this.selectedOption === 'delivery' ?  this.FinaldistanceTax.toFixed(2) : 0,
+                  paymentIntentId: this.paymentIntentId,
+                  Amount: this.total.toFixed(2),
+                  userId: this.userId,
+                  note: this.note,
                 };
 
-                this.orderService.createOrder(order).subscribe((res) => {
-                  if (res) {
-                    this.sendEmail2(formData.value?.Email);
-                    this.sendEmail();
-                    this.isLoading = false;
+                this.orderService
+                  .postSubOnlineOrders(order)
+                  .subscribe((res) => {
+                    if (res) {
+                      this.sendEmail2(formData.value?.Email);
+                      this.sendEmail();
+                      this.isLoading = false;
 
-                    Swal.fire({
-                      icon: 'success',
-                      title: 'order Successful',
-                      text: 'Congratulations! Your order for the selected products has been successful.For further details and confirmation, please check your email.',
-                    }).then(() => {
-                      this.cartService.clearCart();
-                      this.router.navigate(['/']);
-                    });
-                  }
-                });
+                      Swal.fire({
+                        icon: 'success',
+                        title: 'order Successful',
+                        text: 'Congratulations! Your order for the selected products has been successful.For further details and confirmation, please check your email.',
+                      }).then(() => {
+                        this.cartService.clearCart();
+                        this.router.navigate(['/']);
+                      });
+                    }
+                  });
               } else {
                 this.isLoading = false;
 
@@ -719,36 +772,64 @@ export class CheckoutComponent implements OnInit {
                   .subscribe((res: any) => {
                     if (res) {
                       let order = {
-                        customerId: res._id,
+                        // customerId: res._id,
+                        // product: this.food,
+                        // orderStatus: 'online',
+                        // userId: this.userData,
+                        // productWithQty: this.productWithQty,
+                        // selectedModifiers: this.modifires,
+                        // tax: this.order?.tax,
+                        // taxValue: this.order?.taxValue,
+                        // PaymentStatus: this.order?.PaymentStatus,
+                        // priceExclTax: this?.total,
+                        // subtotal: this?.subtotal,
+                        // deliveryfee: this.deliveryFee,
+
+                        orderNo: this.orderNo,
                         product: this.food,
-                        orderStatus: 'online',
-                        userId: this.userData,
+                        orderStatus: 'new order',
                         productWithQty: this.productWithQty,
+                        customerId: res?._id,
+                        tax: this.defaultTax,
                         selectedModifiers: this.modifires,
-                        tax: this.order?.tax,
-                        taxValue: this.order?.taxValue,
-                        PaymentStatus: this.order?.PaymentStatus,
-                        priceExclTax: this?.total,
-                        subtotal: this?.subtotal,
-                        deliveryfee: this.deliveryFee,
+                        deliveryOptions: this.selectedOption === 'delivery' ? {
+                          dropOffAddress: this.location,
+                          // dropOffInstructions: this.note,
+                          } : undefined,
+                          pickupOptions: this.selectedOption === 'pickup' ? {
+                          pickupAddress: this.businessLocation,
+                          pickupInstructions: "Standard Pickup",
+                          schedulePickup: "Select time"
+                          } : undefined,
+                        priceExclTax: this?.total.toFixed(2),
+                        Status: 'patronpal order',
+                        orderType: this.selectedOption,
+                        PaymentStatus: 'online',
+                        deliveryfee: this.selectedOption === 'delivery' ?  this.FinaldistanceTax.toFixed(2) : 0,
+                        paymentIntentId: this.paymentIntentId,
+                        Amount: this.total.toFixed(2),
+                        userId: this.userId,
+                        note: this.note,
                       };
 
-                      this.orderService.createOrder(order).subscribe((res) => {
-                        if (res) {
-                          this.sendEmail2(formData.value?.Email);
-                          this.sendEmail();
-                          this.isLoading = false;
+                      this.orderService
+                        .postSubOnlineOrders(order)
+                        .subscribe((res) => {
+                          if (res) {
+                            this.sendEmail2(formData.value?.Email);
+                            this.sendEmail();
+                            this.isLoading = false;
 
-                          Swal.fire({
-                            icon: 'success',
-                            title: 'order Successful',
-                            text: 'Congratulations! Your order for the selected products has been successful.For further details and confirmation, please check your email.',
-                          }).then(() => {
-                            this.cartService.clearCart();
-                            this.router.navigate(['/']);
-                          });
-                        }
-                      });
+                            Swal.fire({
+                              icon: 'success',
+                              title: 'order Successful',
+                              text: 'Congratulations! Your order for the selected products has been successful.For further details and confirmation, please check your email.',
+                            }).then(() => {
+                              this.cartService.clearCart();
+                              this.router.navigate(['/']);
+                            });
+                          }
+                        });
                     }
                   });
               } else {

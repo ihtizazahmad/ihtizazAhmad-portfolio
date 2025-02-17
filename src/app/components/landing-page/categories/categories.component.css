@@ -20,7 +20,8 @@ color: #83d51a;
 }
 img{
     object-fit: contain;
-    width: 100%;
+    width: 80%;
+    align-self: center;
     height: 250px;
     border-radius: 16px 16px 0px 0px;
 }
