@@ -45,12 +45,14 @@ input[type="text"] {
 }
 
 .hero-img {
-    max-width: 100%;
+    max-width: 50%;
     width: 100%;
 }
 .back-div{
     border-radius: 200px 0px 0px 200px;
     background-color: #83d51a;
+    display: flex;
+    justify-content: center;
 }
 
 .input-div{
