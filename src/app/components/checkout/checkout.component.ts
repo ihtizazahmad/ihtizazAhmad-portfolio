@@ -66,11 +66,11 @@ export class CheckoutComponent implements OnInit {
   taxName: any;
   addtax: number = 0;
   defaultTax: any[] = [];
-  businessId = '66fc5fb8aef1d315dc9fd4e6';
+  businessId = environment.userId;
   serviceFee: number = 0;
   discountPrice: number = 0;
   note: string = '';
-  selectedOption: string = 'delivery';
+  selectedOption: string = 'pickup';
   businessLocation: string = "6802 Wilkow Dr, Orlando, FL, ";
 
   initMap() {
@@ -157,6 +157,8 @@ export class CheckoutComponent implements OnInit {
         this.deliveryFee = this.businessData?.deliveryFee;
         if (this.businessData?.delivery === 'true') {
           this.fetchData();
+        }else if(this.businessData?.delivery == 'false'){
+          this.selectedOption = 'pickup'
         }
       }
     });
