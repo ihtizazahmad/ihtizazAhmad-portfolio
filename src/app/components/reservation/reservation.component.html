@@ -1,30 +1,37 @@
 <mat-dialog-content>
-    <h3 class="text-center title">Reservations</h3>
-    <form>
-      <div class="mb-3">
-        <label class="form-label">Location <span class="text-danger">*</span></label>
-        <input type="text" class="form-control rounded-input w-100" placeholder="Enter your location" required>
-      </div>
-  
-      <div class="mb-3">
-        <label class="form-label">Guests</label>
-        <input type="number" class="form-control rounded-input w-100" placeholder="Number of guests">
-      </div>
-  
-      <div class="mb-3">
-        <label class="form-label">Date <span class="text-danger">*</span></label>
-        <input type="date" class="form-control rounded-input w-100" required>
-      </div>
-  
-      <div class="mb-3">
-        <label class="form-label">Time</label>
-        <input type="time" class="form-control rounded-input w-100">
-      </div>
-    </form>
-  </mat-dialog-content>
-  
-  <mat-dialog-actions class="d-flex justify-content-end mt-3">
-    <button mat-button mat-dialog-close class="btn cancel-btn text-white">Cancel</button>
-    <button mat-raised-button color="primary" class="btn reserve-btn ms-3">Reserve</button>
-  </mat-dialog-actions>
-  
+  <h3 class="text-center title">Reservations</h3>
+  <form>
+    <div class="mb-3">
+      <label class="form-label">Location <span class="text-danger">*</span></label>
+      <input type="text" class="form-control rounded-input w-100" placeholder="Enter your location"
+        [(ngModel)]="reservationData.location" name="location" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Guests</label>
+      <input type="number" class="form-control rounded-input w-100" placeholder="Number of guests"
+        [(ngModel)]="reservationData.guests" name="guests">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Date <span class="text-danger">*</span></label>
+      <input type="date" class="form-control rounded-input w-100"
+        [(ngModel)]="reservationData.date" name="date" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Time</label>
+      <input type="time" class="form-control rounded-input w-100"
+        [(ngModel)]="reservationData.time" name="time">
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions class="d-flex justify-content-end mt-3">
+  <button mat-button mat-dialog-close class="btn cancel-btn text-white">Cancel</button>
+  <button mat-raised-button color="primary" class="btn reserve-btn ms-3"
+    (click)="submitReservation()">Reserve</button>
+
+    <!-- <button (click)="dlete()">delet</button> -->
+
+</mat-dialog-actions>

@@ -11,9 +11,7 @@ export class CategoryService {
   public apiUrl = environment.apiUrl
   parentcategoryUrl = this.apiUrl + '/parentcategory';  
   categoryUrl = this.apiUrl + '/category'; 
-  userId = '66fc5fb8aef1d315dc9fd4e6'; 
-  //  for test mode-->
-  //  userId = '65d6e2acf4cb2c368afded71'; 
+  userId = environment.userId; 
   constructor(private http:HttpClient,) { }
 
   

@@ -15,7 +15,7 @@ export class ProductService {
   reviewUrl = this.apiUrl + '/review'
   getdeviceUrl = this.apiUrl + '/device';
   modifierUrl = this.apiUrl + '/categories1';
-  userId = '66fc5fb8aef1d315dc9fd4e6'; 
+  userId = environment.userId;
 
   //  for test mode-->
   //  userId = '65d6e2acf4cb2c368afded71'; 
