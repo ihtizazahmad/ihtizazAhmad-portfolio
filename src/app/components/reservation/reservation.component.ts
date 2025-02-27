@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 import { environment } from 'src/app/environment/environment';
 import { ReservationService } from 'src/app/services/reservation.service';
 import Swal from 'sweetalert2';
@@ -10,14 +11,20 @@ import Swal from 'sweetalert2';
 })
 export class ReservationComponent {
   reservationData = {
-    location: '',
+    address: '',
     guests: null,
-    date: '',
-    time: '',
-    userId: environment.userId
+    reserveDate: '',
+    reserveTime: '',
+    userId: environment.userId,
+    reservedstatus: 'Online',
+    firstName:'', 
+    lastName:'',
+    contactNumber:'',
   }
 
-  constructor(public reservationService: ReservationService) { 
+  constructor(public reservationService: ReservationService
+    ,   public dialogRef: MatDialogRef<ReservationComponent>
+  ) { 
     // this.reservationService.getReservationsByUserId()
     //   .subscribe((response) => {  
     //     console.log('Reservation Response:', response);
@@ -35,8 +42,21 @@ export class ReservationComponent {
           title: 'Reservation Successfull',
           text: 'Your reservation has been successfully created',
           showConfirmButton: true,
+        }).then(() => {
+          console.log('Reservation Response:', response);
+        this.reservationData = {
+          address: '',
+          guests: null,
+          reserveDate: '',
+          reserveTime: '',
+          userId: environment.userId,
+          reservedstatus: 'Online',
+          firstName: '',
+          lastName: '',
+          contactNumber: '',
+        };
+        this.dialogRef.close();
         });
-        console.log('Reservation Response:', response);
       });
   }
     

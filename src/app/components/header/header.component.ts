@@ -40,7 +40,7 @@ export class HeaderComponent {
   openReservationDialog(): void {
     this.dialog.open(ReservationComponent, {
       width: '100%',
-      maxWidth: '500px',
+      maxWidth: '800px',
       disableClose: true,
         panelClass: 'custom-dialog'
      
