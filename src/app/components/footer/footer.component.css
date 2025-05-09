@@ -1,0 +1,65 @@
+.container-fluid{
+    background-color: black;
+    color: white;
+}
+.navbar-brand span {
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+.color {
+    background-color: #83d51a;
+}
+.rotate-up {
+    display: inline-block; 
+    transform: rotate(-90deg); 
+    height: 40px;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+p{
+font-size: 15px;
+font-weight: 400;
+line-height: 22.5px;
+}
+.phonenumber{
+    /* color: #83d51a; */
+    text-decoration: none;
+    font-weight: 600;
+}
+h1{
+font-size: 18px;
+font-weight: 700;
+line-height: 43px;
+}
+input[type="text"] {
+    height: 45px;
+    width: 250px;
+    border-radius: 25px;
+    padding-left: 20px;
+}
+
+.btn-orange {
+    background-color: #458926;
+    color: white;
+    border-radius: 25px;
+    height: 45px;
+    padding: 0 30px;
+}
+.input-div{
+    display: flex;
+}
+a{
+    color: #ffc012;
+}
+@media screen and (max-width:500px){
+    .input-div{
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+    }
+}

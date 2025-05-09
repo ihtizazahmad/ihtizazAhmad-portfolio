@@ -1,0 +1,103 @@
+/* #ffc012 yellow
+#458926 green */
+.navbar-brand span {
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+.navbar-brand{
+    width: 200px;
+}
+.navbar-nav .nav-link {
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 24px;
+    color: rgb(255, 255, 255);
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0px 24px;
+    border-radius: 24px;
+
+}
+
+.color {
+    background-color: #458926;
+}
+
+
+.active {
+    background-color:#458926;
+    color: white !important;
+    border-radius: 24px;
+}
+
+.cart-btn {
+    width: auto;
+    height: auto;
+    padding: 10px;
+    border-radius: 20px;
+    background-color: #ffc012 ;
+    color: white;
+    position: relative;
+}
+.cart-btn .badge {
+    position: absolute;
+    top: -6px;
+    right: -4px;
+    background: #ff3131;
+    color: white;
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* padding: 0.2rem 0.5rem; */
+  }
+.rotate-up {
+    display: inline-block; 
+    transform: rotate(-90deg); 
+    height: 40px;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  
+@media screen and (max-width:500px){
+    .cart-btn{
+        width: auto;
+        margin-right: 10px;
+        margin-left: auto;
+        padding: 0px;
+    }
+    .cart-btn svg{
+        width: 70%;
+    }
+    .navbar-brand span {
+        font-size: 1.6rem;
+    }
+    .rotate-up{
+        height: 45px;
+        width: 45px;
+    }
+    .container-fluid{
+        max-width: 100%;
+        width: 98% !important;
+    }
+    .navbar{
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+}
+.container-fluid{
+    max-width: 100%;
+    width: 90%;
+}
+.navbar {
+    z-index: 1000 !important; /* Ensure it's lower than the dialog */
+  }
+  

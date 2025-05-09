@@ -1,0 +1,85 @@
+.jumbotron-wrapper {
+    background-color: #03081F;
+    padding: 1rem;
+    border-radius: 15px;
+    border: 1px solid #00000033;
+}
+h1 {
+    font-size: 54px;
+    font-weight: 600;
+    line-height: 66px;
+    color: #ffffff;}
+
+.lead {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 20px;
+    color: #ffffff;
+}
+
+.postcode {
+    font-size: 13px;
+    font-weight: 400;
+    color: #ffffff;
+}
+
+.text-orange {
+    color: #ffc012;
+}
+
+input[type="text"] {
+    height: 45px;
+    width: 250px;
+    border-radius: 25px;
+    padding-left: 20px;
+}
+
+.btn-orange {
+    background-color: #458926;
+    color: white;
+    border-radius: 25px;
+    height: 45px;
+    padding: 0 30px;
+}
+
+.hero-img {
+    max-width: 465px;
+    height: 541px;
+    height: 100%;
+    width: 100%;
+}
+.back-div{
+    border-radius: 200px 0px 0px 200px;
+    background-color: #458926;
+}
+
+.input-div{
+    display: flex;
+}
+@media screen and (max-width:500px){
+    h1{
+        font-size: 30px;
+        line-height: 35px;
+        margin: 20px 0px;
+    }
+    .input-div{
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+    }
+    .back-div{
+        margin: 20px 0px 0px 0px;
+    }
+    .col-md-12{
+        padding: 0px;
+    }
+    .container-fluid{
+        max-width: 100%;
+        width: 98% !important;
+    }
+}
+.container-fluid{
+    max-width: 100%;
+    width: 90% !important;
+}

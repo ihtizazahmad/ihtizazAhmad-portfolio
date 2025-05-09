@@ -1,0 +1,721 @@
+<div class="container-fluid">
+  <div class="d-flex justify-content-end mt-4">
+    <div class="btn-group-toggle custom-btn-group">
+        <!-- <label  class="custom-btn" [class.active]="selectedOption === 'delivery'"
+            (click)="selectOption('delivery')">
+            <input type="radio" name="options" autocomplete="off" [checked]="selectedOption === 'delivery'">
+            Delivery
+        </label> -->
+        <label class="custom-btn" [class.active]="selectedOption === 'pickup'" (click)="selectOption('pickup')">
+            <input type="radio" name="options" autocomplete="off" [checked]="selectedOption === 'pickup'">
+            Pickup
+        </label>
+    </div>
+
+
+</div>
+  <div class="my-5">
+    <!-- Checkout Header -->
+    <div class="bg-success text-white py-2 px-4 rounded-top">
+      <h4 class="m-0 py-3">💳 Checkout</h4>
+    </div>
+
+    <!-- Checkout Form -->
+    <form #userForm="ngForm" class="p-4 border rounded-bottom">
+      <!-- Billing Details -->
+      <h5 class="fw-bold mb-3">Billing Details</h5>
+      <div class="row">
+        <div class="mb-3 col-md-6">
+          <label for="first_name" class="form-label">First Name</label>
+          <input
+            type="text"
+            name="FirstName"
+            id="first_name"
+            required
+            class="form-control"
+            placeholder="Enter Your First Name"
+            ngModel
+            #first_name="ngModel"
+          />
+          <div
+            *ngIf="
+              first_name.invalid && (first_name.dirty || first_name.touched)
+            "
+          >
+            <p style="color: red">Please enter your First Name</p>
+          </div>
+        </div>
+        <div class="mb-3 col-md-6">
+          <label for="last_name" class="form-label">Last Name</label>
+          <input
+            class="form-control"
+            name="LastName"
+            type="text"
+            id="last_name"
+            required
+            ngModel
+            #last_name="ngModel"
+            placeholder="Enter Your Last Name"
+          />
+          <div
+            *ngIf="last_name.invalid && (last_name.dirty || last_name.touched)"
+          >
+            <p style="color: red">Please enter your last Name</p>
+          </div>
+        </div>
+        <div class="mb-3 col-md-6">
+          <label for="email" class="form-label">Email Address</label>
+          <input
+            class="form-control"
+            name="Email"
+            type="email"
+            id="Email"
+            ngModel
+            #email="ngModel"
+            required
+            placeholder="Enter Your Email"
+          />
+          <div *ngIf="email.invalid && (email.dirty || email.touched)">
+            <p style="color: red">Please enter your Email.</p>
+          </div>
+        </div>
+        <div class="mb-3 col-md-6">
+          <label for="phone" class="form-label">Phone</label>
+          <input
+            class="form-control"
+            type="tel"
+            name="phone"
+            id="phone"
+            required
+            ngModel
+            #phone="ngModel"
+            placeholder="Enter Your Phone"
+          />
+          <div *ngIf="phone.invalid && (phone.dirty || phone.touched)">
+            <p style="color: red">Please enter your Phone Number</p>
+          </div>
+        </div>
+        <div class="mb-3 col-md-6" *ngIf="selectedOption === 'delivery'">
+          <label for="address" class="form-label">Shipping Address</label>
+          <textarea
+            (input)="valueChanges()"
+            (change)="addressFieldChange()"
+            [(ngModel)]="customerAdreesName"
+            type="text"
+            class="form-control"
+            name="address"
+            placeholder="Enter Your Address or load current location"
+          ></textarea>
+        </div>
+        <div class="col-md-6" *ngIf="selectedOption === 'delivery'">
+          <div class="inputdiv">
+            <label for="searchButton" class="mb-2">Current Location</label>
+            <div class="d-flex w-100">
+              <button
+                class="form-control"
+                type="button"
+                id="searchButton"
+                (click)="loadcurrentloaction()"
+              >
+                Load Current location
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="col-md-12" *ngIf="businessData?.delivery === 'false'">
+          <div class="inputdiv">
+            <label for="address" class="mb-2">Street address</label>
+            <input
+              type="text"
+              class="form-control"
+              name="address"
+              id="address"
+              required
+              ngModel
+              #address="ngModel"
+              placeholder="Enter Your Address"
+            />
+          </div>
+        </div> -->
+      </div>
+    </form>
+  </div>
+
+  <div class="row mt-5" *ngIf="selectedOption === 'pickup'">
+    <div class="col-md-12">
+      <div>
+        <h2>Pick Up Address</h2>
+      </div>
+      <div>
+        <h3 class="fs-4"> {{businessLocation}}</h3>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-5">
+    <div class="col-md-12">
+      <div>
+        <h2>Your Order</h2>
+      </div>
+      <div>
+        <table class="table border">
+          <thead>
+            <tr>
+              <th scope="col">Product</th>
+              <th>Subtotal</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let checkoutData of product">
+              <td>
+                {{ checkoutData?.food?.name }} x
+                {{ checkoutData?.quantity }}
+              </td>
+              <td>{{ checkoutData?.price || 0 | currency }}</td>
+            </tr>
+            <tr *ngIf="modifierPrice">
+              <th>Modifier Price</th>
+              <td>{{ modifierPrice || 0 | currency }}</td>
+            </tr>
+            <tr>
+              <th>Subtotal</th>
+              <td>{{ subtotal || 0 | currency }}</td>
+            </tr>
+
+            <tr *ngIf="selectedOption === 'delivery'">
+              <th>Delivery Fee</th>
+              <td>{{ FinaldistanceTax || 0 | currency }}</td>
+            </tr>
+            <tr>
+              <th>Tax</th>
+              <td>{{ addtax || 0 | currency }}</td>
+            </tr>
+            <tr>
+              <th>POS Surcharge</th>
+              <td>{{ AppFee || 0 | currency }}</td>
+            </tr>
+            <!-- <tr *ngIf="discountPrice">
+              <th>Discount</th>
+              <td>{{ discountPrice || 0 | currency }}</td>
+            </tr> -->
+            <tr>
+              <th>Total</th>
+              <td>{{ total || 0 | currency }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="mb-4">
+          <label for="note"><strong> Note: </strong></label>
+          <textarea class="w-100 border rounded mt-2"
+            name="note"
+            id="note"
+            [(ngModel)]="note"
+            rows="5"
+            placeholder="Write your special instructions here..."
+          ></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="col-md-12"
+      *ngIf="selectedOption === 'delivery' && customerAdreesName"
+    >
+      <div class="text-center" style="font-family: sans-serif">
+        <h5>
+          Office Location:<strong>{{ location }}</strong>
+        </h5>
+        <!-- <h5>
+          Free Delivery Upto: <strong>{{ freeDelivery }} km</strong>
+        </h5> -->
+        <div class="d-flex justify-content-between">
+          <h6>
+            Delivery Charge: <strong>{{ ChargesPerKm }}</strong> per kilometer
+          </h6>
+          <h6>
+            Distance to Office:
+            <strong
+              >{{
+                distanceDifference ? distanceDifference.toFixed(2) : "0.00"
+              }}
+              KM</strong
+            >
+          </h6>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="row p-3"
+      style="background-color: #ebe9eb"
+      *ngIf="!showPaymentUi"
+    >
+      <div class="d-flex justify-content-between">
+        <button class="btn btn-Goback" (click)="goBack()">Go Back</button>
+        <button
+          class="btn btn-order"
+          type="sub"
+          (click)="makePayment(userForm, order, 'paid')"
+        >
+          Submit
+        </button>
+      </div>
+    </div>
+
+    <div class="col-md-12" id="paymentOption" #paymentOptionSection>
+      <div class="row" style="margin-top: 26px">
+        <h3 class="my-4 card-title billing" *ngIf="showPaymentUi">
+          Payment Options
+        </h3>
+        <div class="col d-flex justify-content-center align-items-center mb-1">
+          <form id="payment-form" style="width: 100%">
+            <div id="paymentElement"></div>
+            <button
+              id="submit"
+              class="btn btn-order mt-4"
+              *ngIf="showPaymentUi"
+            >
+              <!-- <div class="spinner-border spinner-border-sm hidden" id="spinner" role="status"></div> -->
+              <span
+                style="
+                  color: white !important;
+                  font-size: 1rem !important;
+                  font-weight: 400 !important;
+                "
+                id="button-text"
+                >Place Order</span
+              >
+            </button>
+            <div id="payment-message" class="hidden mt-3"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div [hidden]="true" #printDataDiv>
+  <html #printDataDiv id="printDataDiv">
+    <head>
+      <style></style>
+    </head>
+
+    <body
+      style="
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      "
+    >
+      <div>
+        <hr style="border-top: 1px dotted black" />
+        <table
+          style="
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            align-items: center;
+            width: 100%;
+          "
+        >
+          <tr>
+            <th style="text-align: left; padding: 5px">Order NO:</th>
+            <td style="text-align: right; padding: 5px">#{{ orderNo }}</td>
+          </tr>
+          <tr>
+            <th style="text-align: left; padding: 5px">Date:</th>
+            <td style="text-align: right; padding: 5px">
+              {{ todayDate | date : "dd/MM/yyyy" }}
+            </td>
+          </tr>
+        </table>
+        <hr style="border: 2px dashed black; width: 70%" hr />
+
+        <div
+          style="display: flex; margin-top: 0.5%; width: 70%; padding-left: 5px"
+        ></div>
+
+        <table
+          style="
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+          "
+        >
+          <tr>
+            <th
+              style="
+                border-bottom: 2px dashed black;
+                text-align: left;
+                padding: 5px;
+              "
+            >
+              Item
+            </th>
+            <th
+              style="
+                border-bottom: 2px dashed black;
+                text-align: left;
+                padding: 5px;
+              "
+            >
+              name
+            </th>
+            <th
+              style="
+                border-bottom: 2px dashed black;
+                text-align: left;
+                padding: 5px;
+              "
+            >
+              Quantity
+            </th>
+            <th
+              style="
+                border-bottom: 2px dashed black;
+                text-align: right;
+                padding: 5px;
+              "
+            >
+              Price
+            </th>
+          </tr>
+          <ng-container>
+            <tr *ngFor="let checkoutData of product">
+              <td style="text-align: left; padding-left: 5px">
+                <img
+                  style="
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    margin-top: 7px;
+                  "
+                  class="w-100 border secimg"
+                  *ngIf="
+                    checkoutData?.food?.Product_pic !== 'undefined' &&
+                      checkoutData?.food?.Product_pic !== null;
+                    else noImage
+                  "
+                  [src]="checkoutData?.food?.Product_pic"
+                  [alt]="checkoutData?.food?.name"
+                />
+                <ng-template #noImage>
+                  <img
+                    style="
+                      width: 40px;
+                      height: 40px;
+                      border-radius: 50%;
+                      margin-top: 7px;
+                    "
+                    src="../../../../assets/soso.jpeg"
+                    alt="No available image"
+                    class="w-100 border secimg"
+                  />
+                </ng-template>
+              </td>
+              <td style="text-align: left; padding-left: 5px">
+                {{ checkoutData?.food?.name }}
+              </td>
+              <td style="text-align: left; padding-left: 5px">
+                {{ checkoutData?.quantity }}
+              </td>
+              <td style="text-align: right; padding-right: 5px">
+                {{ checkoutData?.price | currency }}
+              </td>
+            </tr>
+          </ng-container>
+        </table>
+
+        <hr style="border-top: 1px dotted black" />
+        <table
+          style="
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            align-items: center;
+            width: 100%;
+          "
+        >
+          <tr *ngIf="modifierPrice">
+            <th style="text-align: left; padding-left: 5px">Modifier Total</th>
+            <td style="text-align: right; padding-right: 5px">
+              {{ modifierPrice || 0 | currency }}
+            </td>
+          </tr>
+          <tr>
+            <th style="text-align: left; padding-left: 5px">Sub Total</th>
+            <td style="text-align: right; padding-right: 5px">
+              {{ subtotal || 0 | currency }}
+            </td>
+          </tr>
+          <tr *ngIf="addtax">
+            <th style="text-align: left; padding-left: 5px">Tax</th>
+            <td style="text-align: right; padding-right: 5px">
+              {{ addtax || 0 | currency }}
+            </td>
+          </tr>
+          <tr>
+            <th style="text-align: left; padding-left: 5px; ">
+              POS Surcharge
+            </th>
+            <td style="text-align: right; padding-right: 5px">
+              {{ AppFee || 0 | currency }}
+            </td>
+          </tr>
+          <!-- <tr *ngIf="discountPrice">
+            <th style="text-align: left; padding-left: 5px; ">
+              Discount
+            </th>
+            <td style="text-align: right; padding-right: 5px">
+              {{ discountPrice || 0 | currency }}
+            </td>
+          </tr> -->
+
+          <tr *ngIf="selectedOption === 'delivery'">
+            <th style="text-align: left; padding-left: 5px">Delivery Fee</th>
+            <td style="text-align: right; padding-right: 5px">
+              {{ FinaldistanceTax || 0 | currency }}
+            </td>
+          </tr>
+          <tr>
+            <th style="text-align: left; padding-left: 5px; color: #f6871f">
+              Total
+            </th>
+            <td style="text-align: right; padding-right: 5px">
+              {{ total | currency }}
+            </td>
+          </tr>
+        </table>
+        <hr style="border-top: 1px dotted black" />
+        <div style="margin-top: 10%">
+          <h4 style="text-align: center">Sincerely&copy;Soso Cuisine</h4>
+          <p style="text-align: center">
+            {{ customerName }} has been selected the above products. Please take
+            appropriate action.
+          </p>
+          <p style="font-weight: bold; text-align: center">
+            Contact No: {{ customerPhone }}
+          </p>
+          <p style="font-weight: bold; text-align: center">
+            customer Email: {{ customerEmail }}
+          </p>
+        </div>
+      </div>
+    </body>
+  </html>
+</div>
+
+<div [hidden]="true" #customertDataDiv hidden="!sendEmailui">
+  <html #customertDataDiv id="customertData">
+    <head>
+      <style></style>
+    </head>
+
+    <body
+      style="
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      "
+    >
+      <div>
+        <hr style="border-top: 1px dotted black" />
+        <table
+          style="
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            align-items: center;
+            width: 100%;
+          "
+        >
+          <tr>
+            <th style="text-align: left; padding: 5px">Order NO:</th>
+            <td style="text-align: right; padding: 5px">#{{ orderNo }}</td>
+          </tr>
+          <tr>
+            <th style="text-align: left; padding: 5px">Date:</th>
+            <td style="text-align: right; padding: 5px">
+              {{ todayDate | date : "dd/MM/yyyy" }}
+            </td>
+          </tr>
+        </table>
+        <hr style="border: 2px dashed black; width: 70%" hr />
+
+        <div
+          style="display: flex; margin-top: 0.5%; width: 70%; padding-left: 5px"
+        ></div>
+
+        <table
+          style="
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+          "
+        >
+          <tr>
+            <th
+              style="
+                border-bottom: 2px dashed black;
+                text-align: left;
+                padding: 5px;
+              "
+            >
+              Item
+            </th>
+            <th
+              style="
+                border-bottom: 2px dashed black;
+                text-align: left;
+                padding: 5px;
+              "
+            >
+              name
+            </th>
+            <th
+              style="
+                border-bottom: 2px dashed black;
+                text-align: left;
+                padding: 5px;
+              "
+            >
+              Quantity
+            </th>
+            <th
+              style="
+                border-bottom: 2px dashed black;
+                text-align: right;
+                padding: 5px;
+              "
+            >
+              Price
+            </th>
+          </tr>
+          <ng-container>
+            <tr *ngFor="let checkoutData of product">
+              <td style="text-align: left; padding-left: 5px">
+                <img
+                  style="
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    margin-top: 7px;
+                  "
+                  class="w-100 border secimg"
+                  *ngIf="
+                    checkoutData?.food?.Product_pic !== 'undefined' &&
+                      checkoutData?.food?.Product_pic !== null;
+                    else noImage
+                  "
+                  [src]="checkoutData?.food?.Product_pic"
+                  [alt]="checkoutData?.food?.name"
+                />
+                <ng-template #noImage>
+                  <img
+                    style="
+                      width: 40px;
+                      height: 40px;
+                      border-radius: 50%;
+                      margin-top: 7px;
+                    "
+                    src="../../../../assets/soso.jpeg"
+                    alt="No available image"
+                    class="w-100 border secimg"
+                  />
+                </ng-template>
+              </td>
+              <td style="text-align: left; padding-left: 5px">
+                {{ checkoutData?.food?.name }}
+              </td>
+              <td style="text-align: left; padding-left: 5px">
+                {{ checkoutData?.quantity }}
+              </td>
+              <td style="text-align: right; padding-right: 5px">
+                {{ checkoutData?.price | currency }}
+              </td>
+            </tr>
+          </ng-container>
+        </table>
+
+        <hr style="border-top: 1px dotted black" />
+        <table
+          style="
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            align-items: center;
+            width: 100%;
+          "
+        >
+          <tr *ngIf="modifierPrice">
+            <th style="text-align: left; padding-left: 5px">Modifier Total</th>
+            <td style="text-align: right; padding-right: 5px">
+              {{ modifierPrice || 0 | currency }}
+            </td>
+          </tr>
+          <tr>
+            <th style="text-align: left; padding-left: 5px">Sub Total</th>
+            <td style="text-align: right; padding-right: 5px">
+              {{ subtotal || 0 | currency }}
+            </td>
+          </tr>
+          <tr *ngIf="addtax">
+            <th style="text-align: left; padding-left: 5px">Tax</th>
+            <td style="text-align: right; padding-right: 5px">
+              {{ addtax || 0 | currency }}
+            </td>
+          </tr>
+          <tr>
+            <th style="text-align: left; padding-left: 5px">POS Surcharge</th>
+            <td style="text-align: right; padding-right: 5px">
+              {{ AppFee || 0 | currency }}
+            </td>
+          </tr>
+          <!-- <tr *ngIf="discountPrice">
+            <th style="text-align: left; padding-left: 5px">Discount</th>
+            <td style="text-align: right; padding-right: 5px">
+              {{ discountPrice || 0 | currency }}
+            </td>
+          </tr> -->
+
+          <tr *ngIf="selectedOption === 'delivery'">
+            <th style="text-align: left; padding-left: 5px">Delivery Fee</th>
+            <td style="text-align: right; padding-right: 5px">
+              {{ FinaldistanceTax || 0 | currency }}
+            </td>
+          </tr>
+          <tr>
+            <th style="text-align: left; padding-left: 5px; color: #f6871f">Total</th>
+            <td style="text-align: right; padding-right: 5px">
+              {{ total | currency }}
+            </td>
+          </tr>
+        </table>
+        <hr style="border-top: 1px dotted black" />
+        <div>
+          <p style="font-weight: bold; margin-top: 20px; text-align: center">
+            Thank you for selecting a Product!
+          </p>
+          <p>
+            We appreciate your choice and look forward to helping you succeed.
+          </p>
+          <p>
+            We appreciate your decision to enroll in our course. Your commitment
+            to learning is commendable, and we're excited to have you on board.
+          </p>
+          <p>
+            By selecting our products, you've taken the first step towards
+            personal and professional growth. We're here to support you every
+            step.
+          </p>
+          <p>
+            Please feel free to reach out to us if you have any questions. Our
+            dedicated team is here to help you succeed.
+          </p>
+          <p>Wishing you an enriching</p>
+          <h4 style="text-align: center">Sincerely&copy;Soso Cuisine</h4>
+          <p style="margin-top: -15px; text-align: center">
+            Email: {{ userEmail }}
+          </p>
+        </div>
+      </div>
+    </body>
+  </html>
+</div>

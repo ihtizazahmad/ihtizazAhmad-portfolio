@@ -1,0 +1,65 @@
+<mat-dialog-content>
+  <h3 class="text-center title">Reservations</h3>
+  <form>
+    <div class="row">
+      <!-- First Name -->
+      <div class="col-md-6 mb-3">
+        <label class="form-label">First Name <span class="text-danger">*</span></label>
+        <input type="text" class="form-control rounded-input w-100" placeholder="Enter your first name"
+          [(ngModel)]="reservationData.firstName" name="firstName" required>
+      </div>
+
+      <!-- Last Name -->
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Last Name <span class="text-danger">*</span></label>
+        <input type="text" class="form-control rounded-input w-100" placeholder="Enter your last name"
+          [(ngModel)]="reservationData.lastName" name="lastName" required>
+      </div>
+
+      <!-- Contact Number -->
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Contact Number <span class="text-danger">*</span></label>
+        <input type="text" class="form-control rounded-input w-100" placeholder="Enter your contact number"
+          [(ngModel)]="reservationData.contactNumber" name="contactNumber" required>
+      </div>
+
+      <!-- Location -->
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Location <span class="text-danger">*</span></label>
+        <input type="text" class="form-control rounded-input w-100" placeholder="Enter your location"
+          [(ngModel)]="reservationData.address" name="address" required>
+      </div>
+
+      <!-- Guests -->
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Guests <span class="text-danger">*</span></label>
+        <input type="number" class="form-control rounded-input w-100" placeholder="Number of guests"
+          [(ngModel)]="reservationData.guests" name="guests" required>
+      </div>
+
+      <!-- Date -->
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Date <span class="text-danger">*</span></label>
+        <input type="date" class="form-control rounded-input w-100"
+          [(ngModel)]="reservationData.reserveDate" name="reserveDate" required>
+      </div>
+
+      <!-- Time -->
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Time <span class="text-danger">*</span></label>
+        <input type="time" class="form-control rounded-input w-100"
+          [(ngModel)]="reservationData.reserveTime" name="reserveTime" required>
+      </div>
+    </div>
+  </form>
+
+  <!-- Special Note -->
+  <div class="alert alert-info mt-3">
+    <strong>Special Note:</strong> Please arrive at least 10 minutes before your reservation time to ensure a smooth check-in process.
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions class="d-flex justify-content-end mt-3">
+  <button mat-button mat-dialog-close class="btn cancel-btn text-white">Cancel</button>
+  <button mat-raised-button color="primary" class="btn reserve-btn ms-3" (click)="submitReservation()">Reserve</button>
+</mat-dialog-actions>

@@ -1,0 +1,71 @@
+<div class="container">
+    <h1 class="text-center display-4">Contact Us</h1>
+    <div class="card-container">
+        <div class="card">
+            <h3>Address</h3>
+            <p> 4427 El Cajon Boulevard, San Diego, CA
+            </p>
+        </div>
+        <div class="card">
+            <h3>Phone Number</h3>
+            <a href="tel:6198802126" class="icon-button call-button">
+              (619) 880-2126
+            </a>
+        </div>
+        <div class="card">
+            <h3>Email</h3>
+            <a href="mailto:inirescorp@gmail.com" class="icon-button gmail-button" target="_blank">
+              inirescorp&#64;gmail.com 
+            </a>
+        </div>
+    </div>
+    <div id="contact">
+        <form class="p-4" [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+            <div class="mb-4">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" id="name" class="form-control" placeholder="Enter your name" formControlName="name" required />
+                <div
+                      *ngIf="
+                        contactForm.get('name')?.invalid &&
+                        (contactForm.get('name')?.touched ||
+                          contactForm.get('name')?.dirty)
+                      "
+                      class="error"
+                    >
+                      Name is required.
+                    </div>
+            </div>
+            <div class="mb-4">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" id="email" class="form-control" placeholder="Enter your email" formControlName="email" required />
+                <div
+                      *ngIf="
+                        contactForm.get('email')?.invalid &&
+                        (contactForm.get('email')?.touched ||
+                          contactForm.get('email')?.dirty)
+                      "
+                      class="error"
+                    >
+                      Email is required.
+                    </div>
+            </div>
+            <div class="mb-4">
+                <label for="message" class="form-label">Message</label>
+                <textarea id="message" class="form-control" rows="5" placeholder="Your message" formControlName="message" required></textarea>
+                <div
+                      *ngIf="
+                        contactForm.get('message')?.invalid &&
+                        (contactForm.get('message')?.touched ||
+                          contactForm.get('message')?.dirty)
+                      "
+                      class="error"
+                    >
+                      Name is required.
+                    </div>
+            </div>
+            <div class="text-center">
+                <button type="submit"  [disabled]="contactForm.invalid" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>

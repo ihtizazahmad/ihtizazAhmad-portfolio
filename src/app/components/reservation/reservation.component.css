@@ -1,0 +1,61 @@
+.title {
+    font-size: 1.75rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #83d51a;
+  }
+  
+  .form-label {
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .rounded-input {
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    transition: border 0.3s ease-in-out;
+    width: 100%;
+  }
+  
+  .rounded-input:focus {
+    border-color: #83d51a;
+    box-shadow: 0px 0px 5px rgba(131, 213, 26, 0.5);
+  }
+  
+  .mat-dialog-actions {
+    padding: 15px;
+    border-top: 1px solid #ddd;
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+  }
+  
+  .btn {
+    padding: 12px 25px;
+    font-size: 1rem;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+  
+  .cancel-btn {
+    background-color: #ff3131;
+    color: white;
+    border: none;
+  }
+  
+  .cancel-btn:hover {
+    background-color: #e02727;
+  }
+  
+  .reserve-btn {
+    background-color: #83d51a;
+    color: white;
+    border: none;
+  }
+  
+  .reserve-btn:hover {
+    background-color: #75c117;
+  }
+  
