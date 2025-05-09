@@ -13,7 +13,7 @@ h2 {
     width: 280px;
     height: 70px;
     border-radius: 8px;
-    background: #83D51A;
+    background: #ffc012;
     font-size: 32px;
     font-weight: 600;
     line-height: 48px;
@@ -22,7 +22,7 @@ h2 {
     cursor: pointer;
     display: flex;
     align-items: center;
-    color:#83D51A;
+    color:#458926;
     margin-bottom:10px;
     mat-icon{
         font-size: 20px;
@@ -40,7 +40,7 @@ h5 {
     width: 250px;
     height: 55px;
     border-radius: 8px;
-    background: #83D51A;
+    background: #ffc012;
     font-size: 24px;
     font-weight: 600;
     line-height: 36px;
@@ -51,7 +51,7 @@ h5 {
     width: 45px;
     height: 45px;
     border-radius: 50%;
-    background-color: #ff3131;
+    background-color: #458926;
     color: white;
     font-size: 24px;
     font-weight: 700;
@@ -59,17 +59,18 @@ h5 {
 }
 
 .price {
-    color: #ff3131;
+    color: #458926;
 }
 
 .total-to-pay {
     display: inline-flex;
     align-items: center;
-    background-color: #ff3131;
+    background-color: black;
     padding: 10px 20px;
     border-radius: 8px;
     color: #fff;
     font-family: 'poppins', sans-serif !important;
+    cursor: pointer;
 }
 
 .total-to-pay .label {

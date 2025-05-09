@@ -54,3 +54,56 @@ h1 {
     max-width: 100%;
     width: 90% !important;
 }
+
+
+.food-menu-offer {
+    background: linear-gradient(135deg, #2d2d2d 0%, #f3a500 100%); /* Dark gray to orange gradient */
+    padding: 60px 0;
+    color: #fff;
+  }
+  
+  .food-menu-offer .offer-title {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 15px;
+  }
+  .food-menu-offer .offer-description {
+    font-size: 1.2rem;
+    color: #e6e6e6;
+    line-height: 1.6;
+    margin-bottom: 25px;
+  }  
+  .food-menu-offer .image-section {
+    text-align: center;
+  }
+  
+  .food-menu-offer .image-placeholder {
+    width: 250px;
+    height: 250px;
+    background-color: #fff;
+    border-radius: 50%;
+    margin: 0 auto;
+  }
+  .logo{
+    border-radius: 10px;
+  }
+  
+  @media (max-width: 768px) {
+    .food-menu-offer .offer-title {
+      font-size: 2rem;
+    }
+  
+    .food-menu-offer .offer-description {
+      font-size: 0.9rem;
+    }
+  
+    .food-menu-offer .offer-discount {
+      font-size: 1rem;
+    }
+  
+    .food-menu-offer .website-link {
+      font-size: 1rem;
+    }
+  }
+  

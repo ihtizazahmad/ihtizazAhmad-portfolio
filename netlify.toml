@@ -1,6 +1,6 @@
 [build]
 command = "npm run build"
-publish = "/dist/sosocuisine"
+publish = "dist/IniHabesha"
 base = "/"
 
 [[redirects]]

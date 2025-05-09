@@ -18,7 +18,7 @@
     position: absolute;
     top: 10px;
     right: 10px;
-    background-color: #83d51a;
+    background-color: #ffc012;
     color: #fff;
   }
 
@@ -29,7 +29,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #83d51a;
+    background-color: #ffc012;
     z-index: 999
   }
 
@@ -53,7 +53,7 @@
   }
 
   .text-orange {
-    color: #83d51a;
+    color: #ffc012;
   }
 
   .section-header {
@@ -82,7 +82,7 @@
     width: 200px;
     height: 45px;
     border-radius: 8px;
-    background: #028643;
+    background: #458926;
     border: 1px solid #0000001C;
     display: flex;
     justify-content: center;

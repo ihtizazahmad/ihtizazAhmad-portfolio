@@ -26,7 +26,7 @@ h1 {
 }
 
 .text-orange {
-    color: #ff3131;
+    color: #ffc012;
 }
 
 input[type="text"] {
@@ -50,7 +50,7 @@ input[type="text"] {
 }
 .back-div{
     border-radius: 200px 0px 0px 200px;
-    background-color: #83d51a;
+    background-color: #ffc012;
     display: flex;
     justify-content: center;
 }

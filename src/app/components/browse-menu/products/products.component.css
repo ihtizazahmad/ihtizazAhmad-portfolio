@@ -1,9 +1,10 @@
 .categories {
   height: 96px;
-  background: #83d51a;
+  background: #ffc012;
   display: flex;
   justify-content: center;
   align-items: center; 
+  color: rgb(0, 0, 0);
 }
  .my-category{
   width: 100%;
@@ -20,7 +21,7 @@
   line-height: 31.5px;
   height: 39px;
   border-radius: 120px;
-  color: white;
+  /* color: white; */
   white-space: nowrap;
   display: flex;
   justify-content: center;
@@ -29,7 +30,8 @@
   padding: 0px 20px;
 }
 .active {
-  background-color: #ff3131;
+  background-color: #458926;
+  color: white;
 }
 .container-fluid {
   max-width: 100%;
