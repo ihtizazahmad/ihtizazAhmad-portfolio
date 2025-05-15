@@ -5,7 +5,7 @@ export const environment = {
     socketUrl : 'https://api.patronworks.net',
     stripeClientId:'ca_NTuk60cLep4m855LRtD8jL3Hasxtssjp',
     stripeKey:'pk_live_51MiZTVF1YkHoz4Y5sBZLklUnnkRrmCZ0yfEeWnPUAluKFbvMEGPjCl7u7VEHlnQLT2PcBa3zviwQMr6ihIsQhjR900ZTqbI4eb',
-    userId:'66fc5fb8aef1d315dc9fd4e6' //soso id
+    userId:'680804e05d0e7d68627ad3c6' //soso id
   };
   
 
